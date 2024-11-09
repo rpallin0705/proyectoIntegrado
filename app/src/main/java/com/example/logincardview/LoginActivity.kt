@@ -14,8 +14,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginActivityBinding: LoginActivityBinding
 
     companion object {
-        private const val USERNAME_CREDENTIAL = "usuario"
-        private const val PASSWORD_CREDENTIAL = "1234"
+        private const val MYUSER = "usuario"
+        private const val MYPASS = "1234"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +31,6 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-
         start()
 
     }
@@ -42,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
             val username = loginActivityBinding.usernameEditTxt.text.toString()  // Obtener el texto del username
             val password = loginActivityBinding.passwordEditTxt.text.toString()  // Obtener el texto del password
 
-            if (username == USERNAME_CREDENTIAL && password == PASSWORD_CREDENTIAL) {
+            if (username == MYUSER && password == MYPASS) {
                 val intent = Intent(this, MainScreen::class.java)
                 intent.putExtra("username", username)
                 intent.putExtra("password", password)
