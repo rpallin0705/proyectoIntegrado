@@ -8,4 +8,13 @@
     <string name="logo">logo</string>
     <string name="login_button">login into app</string>
 
+
+    <string name="restaurant_1_name">Tokyo Bystro</string>
+    <string name="restaurant_1_address">Avenida de Madrid, 8, Jaén</string>
+    <string name="restaurant_1_phone">+34 622 573 233</string>
+    <string name="restaurant_2_name">Shibuya Circuit</string>
+    <string name="restaurant_2_address">Calle Gran Vía, 42, Madrid</string>
+    <string name="restaurant_2_phone">+34 622 573 233</string>
+
+
 </resources>

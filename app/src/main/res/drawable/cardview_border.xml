@@ -1,0 +1,19 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Sombra difuminada -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="20dp" />
+            <solid android:color="#00000000" />
+            <padding android:left="8dp" android:top="8dp" android:right="8dp" android:bottom="8dp" />
+            <stroke android:width="2dp" android:color="#50000000" />
+        </shape>
+    </item>
+
+    <!-- Fondo del CardView -->
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="20dp" />
+            <solid android:color="@color/black" />
+        </shape>
+    </item>
+</layer-list>
