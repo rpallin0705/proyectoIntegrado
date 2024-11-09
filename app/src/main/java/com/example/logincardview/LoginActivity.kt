@@ -15,7 +15,7 @@ class LoginActivity : AppCompatActivity() {
 
     companion object {
         private const val USERNAME_CREDENTIAL = "usuario"
-        private const val PASSWORD_CREDENTIAL = "usuario"
+        private const val PASSWORD_CREDENTIAL = "1234"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +44,8 @@ class LoginActivity : AppCompatActivity() {
 
             if (username == USERNAME_CREDENTIAL && password == PASSWORD_CREDENTIAL) {
                 val intent = Intent(this, MainScreen::class.java)
+                intent.putExtra("username", username)
+                intent.putExtra("password", password)
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "El usuario o la contraseña son incorrectos", Toast.LENGTH_SHORT).show()
