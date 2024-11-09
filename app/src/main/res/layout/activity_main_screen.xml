@@ -41,12 +41,13 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="378dp"
-        android:layout_height="107dp"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="76dp"
+        android:layout_marginRight="10dp"
         app:cardBackgroundColor="#E8000000"
         app:cardCornerRadius="5dp"
-        app:cardElevation="0dp"
         app:contentPadding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,12 +61,12 @@
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="95dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 app:srcCompat="@drawable/cardview_img1" />
 
             <LinearLayout
-                android:layout_width="263dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
@@ -156,16 +157,16 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
-        android:layout_width="378dp"
-        android:layout_height="107dp"
-        app:cardCornerRadius="5dp"
-
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="24dp"
+        android:layout_marginRight="10dp"
         app:cardBackgroundColor="#E8000000"
-        app:cardElevation="0dp"
-        app:contentPadding="4dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardView"
-        app:layout_constraintStart_toStartOf="@+id/cardView"
+        app:cardCornerRadius="5dp"
+        app:contentPadding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView">
 
         <LinearLayout
@@ -176,12 +177,12 @@
             <ImageView
                 android:id="@+id/imageView9"
                 android:layout_width="95dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="4dp"
                 app:srcCompat="@drawable/cardview_img2" />
 
             <LinearLayout
-                android:layout_width="263dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
