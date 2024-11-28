@@ -16,7 +16,7 @@
             android:name=".LocalActivity"
             android:exported="false" />
         <activity
-            android:name=".MainScreen"
+            android:name=".MainScreenActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
