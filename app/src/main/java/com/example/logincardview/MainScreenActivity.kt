@@ -38,7 +38,8 @@ class MainScreenActivity : AppCompatActivity() {
     fun init(){
         initRecyclerView()
         controller = Controller(this)
-        controller.setAdapter()
+
+        controller.setAdapter(mainScreenBinding.myRecyclerView)
     }
 
     private fun initRecyclerView() {
