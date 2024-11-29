@@ -37,7 +37,7 @@ class Controller(val context : Context) {
             delHotel(pos)
         }
 
-        recyclerView.adapter = adapterLocal // Asegúrate de asignar el adaptador al RecyclerView
+        recyclerView.adapter = adapterLocal
     }
 
 
