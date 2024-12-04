@@ -1,9 +1,11 @@
 package com.example.logincardview
 
+import AddLocalDFragment
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.logincardview.databinding.ActivityMainScreenBinding
 import com.example.logincardview.ui.LocalFragment
@@ -38,11 +40,22 @@ class MainScreenActivity : AppCompatActivity() {
             mainScreenBinding.btnFavorites
         )
 
-        buttons.forEach { button ->
-            button.setOnClickListener {
-                // Cambiar el estado de selección
-                updateButtonStates(buttons, button)
-            }
+
+        mainScreenBinding.btnAdd.setOnClickListener {
+            updateButtonStates(buttons, it as ImageButton)
+            val fm : FragmentManager = supportFragmentManager
+            val addLocalDFragment = AddLocalDFragment()
+            addLocalDFragment.show(fm, "add")
+
+
+        }
+
+        mainScreenBinding.btnHome.setOnClickListener {
+            updateButtonStates(buttons, it as ImageButton)
+        }
+
+        mainScreenBinding.btnFavorites.setOnClickListener {
+            updateButtonStates(buttons, it as ImageButton)
         }
 
         updateButtonStates(buttons, mainScreenBinding.btnHome)
