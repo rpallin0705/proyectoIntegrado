@@ -7,7 +7,7 @@
     <item
         android:id="@+id/add_button"
         android:enabled="true"
-        android:icon="@drawable/add_va"
+        android:icon="@drawable/add_va_orange"
         android:title="Favs"/>
 
     <item

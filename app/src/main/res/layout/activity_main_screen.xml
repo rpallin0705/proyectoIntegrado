@@ -78,7 +78,7 @@
             android:layout_weight="1"
             android:layout_marginHorizontal="5dp"
             android:background="@drawable/button_selector"
-            android:src="@drawable/add_va"
+            android:src="@drawable/add_va_orange"
             app:tint="@drawable/button_icon_tint"
             android:scaleType="center" />
 

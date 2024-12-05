@@ -5,5 +5,10 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="TransparentDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item> <!-- Opcional, desactiva el sombreado del fondo -->
+    </style>
+
     <style name="Theme.LoginCardView" parent="Base.Theme.LoginCardView" />
 </resources>
