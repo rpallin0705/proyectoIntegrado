@@ -1,19 +1,16 @@
 package com.example.logincardview
 
-import AddLocalDFragment
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.logincardview.databinding.ActivityMainScreenBinding
 import com.example.logincardview.ui.LocalFragment
 
-class MainScreenActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var mainScreenBinding: ActivityMainScreenBinding
-    private lateinit var fragmentLocal: LocalFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +24,6 @@ class MainScreenActivity : AppCompatActivity() {
             transaction.replace(R.id.fragment_container, LocalFragment())
             transaction.commit()
         }
-
-        val username = intent.getStringExtra("username")
-        val password = intent.getStringExtra("password")
 
         addButtonListeners()
     }
@@ -45,7 +39,7 @@ class MainScreenActivity : AppCompatActivity() {
         /*mainScreenBinding.btnAdd.setOnClickListener {
             updateButtonStates(buttons, it as ImageButton)
             val fm : FragmentManager = supportFragmentManager
-            val addLocalDFragment = AddLocalDFragment()
+            val addLocalDFragment = LocalDialogFragmentCU()
             addLocalDFragment.show(fm, "add")
         }*/
 
@@ -67,7 +61,7 @@ class MainScreenActivity : AppCompatActivity() {
         }
     }
 
-    public fun getMainScreenBinding() : ActivityMainScreenBinding {
+    fun getMainScreenBinding() : ActivityMainScreenBinding {
         return this.mainScreenBinding
     }
 

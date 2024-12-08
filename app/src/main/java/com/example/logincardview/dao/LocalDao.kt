@@ -4,11 +4,11 @@ import com.example.logincardview.interfaces.InterfaceDao
 import com.example.logincardview.models.Local
 import com.example.logincardview.models.LocalRepository
 
-class DaoLocal private constructor() : InterfaceDao{
+class LocalDao private constructor() : InterfaceDao{
 
     companion object {
-        val myDao : DaoLocal by lazy {
-            DaoLocal()
+        val myDao : LocalDao by lazy {
+            LocalDao()
         }
     }
 

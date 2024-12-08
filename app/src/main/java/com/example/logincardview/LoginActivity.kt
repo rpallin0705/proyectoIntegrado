@@ -42,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
             val password = loginActivityBinding.passwordEditTxt.text.toString()  // Obtener el texto del password
 
             if (username == MYUSER && password == MYPASS) {
-                val intent = Intent(this, MainScreenActivity::class.java)
+                val intent = Intent(this, MainActivity::class.java)
                 intent.putExtra("username", username)
                 intent.putExtra("password", password)
                 startActivity(intent)

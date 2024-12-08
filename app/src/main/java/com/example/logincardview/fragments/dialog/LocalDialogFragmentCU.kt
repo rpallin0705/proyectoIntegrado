@@ -1,4 +1,3 @@
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +6,12 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import com.example.logincardview.MainScreenActivity
 import com.example.logincardview.R
 import com.example.logincardview.databinding.FragmentAddLocalBinding
 import com.example.logincardview.models.ArgumentsLocal
 import com.example.logincardview.models.Local
-import com.example.logincardview.models.LocalRepository.locales
 
-class AddLocalDFragment : DialogFragment() {
+class LocalDialogFragmentCU : DialogFragment() {
 
     // Callback para devolver el local editado
     var onUpdate: ((Local) -> Unit)? = null

@@ -13,10 +13,7 @@
         android:theme="@style/Theme.LoginCardView"
         tools:targetApi="35">
         <activity
-            android:name=".LocalActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainScreenActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"

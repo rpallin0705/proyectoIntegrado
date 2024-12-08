@@ -1,21 +1,21 @@
 package com.example.logincardview.controller
 
-import AddLocalDFragment
+import LocalDialogFragmentCU
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.logincardview.MainScreenActivity
-import com.example.logincardview.adapter.AdapterLocal
-import com.example.logincardview.dao.DaoLocal
+import com.example.logincardview.MainActivity
+import com.example.logincardview.adapter.LocalAdapter
+import com.example.logincardview.dao.LocalDao
 import com.example.logincardview.models.ArgumentsLocal
 import com.example.logincardview.models.Local
 import com.example.logincardview.ui.LocalFragment
 
-class Controller(val context: Context, val contextFragment: LocalFragment) {
-    lateinit var listLocales: MutableList<Local>
-    private lateinit var adapterLocal: AdapterLocal
+class LocalController(private val context: Context, private val contextFragment: LocalFragment) {
+    private lateinit var listLocales: MutableList<Local>
+    private lateinit var localAdapter: LocalAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
 
     init {
@@ -24,7 +24,7 @@ class Controller(val context: Context, val contextFragment: LocalFragment) {
 
     private fun initData() {
         setScrollWithOffSetLinearLayout()
-        listLocales = DaoLocal.myDao.getDataLocals().toMutableList()
+        listLocales = LocalDao.myDao.getDataLocals().toMutableList()
         setAdapter()
         initOnClickListener()
     }
@@ -37,36 +37,29 @@ class Controller(val context: Context, val contextFragment: LocalFragment) {
     }
 
     private fun initOnClickListener() {
-        val myActivity = context as MainScreenActivity
+        val myActivity = context as MainActivity
         // listener de edit y delete
         myActivity.getMainScreenBinding().btnAdd.setOnClickListener {
             addLocal()
         }
     }
 
-    fun logOut() {
-        Toast.makeText(context, "He mostrado datos en pantalla", Toast.LENGTH_LONG).show()
-        listLocales.forEach {
-            println(it)
-        }
-    }
+    private fun setAdapter() {
 
-    fun setAdapter() {
-
-        adapterLocal = AdapterLocal(
+        localAdapter = LocalAdapter(
             listLocales,
             { pos: Int -> delLocal(pos) },
             { pos: Int -> updateLocal(pos) }
         )
 
-        contextFragment.getLocalFragmentBinding().recyclerViewLocal.adapter = adapterLocal
+        contextFragment.getLocalFragmentBinding().recyclerViewLocal.adapter = localAdapter
 
     }
 
     private fun updateLocal(pos: Int) {
         val localToUpdate = listLocales[pos]  // Obtener el local en la posición seleccionada
 
-        val editDialog = AddLocalDFragment().apply {
+        val editDialog = LocalDialogFragmentCU().apply {
             // Configurar el Bundle con los datos del local seleccionado
             arguments = Bundle().apply {
                 putString(ArgumentsLocal.ARGUMENT_NAME, localToUpdate.nombre)
@@ -77,7 +70,7 @@ class Controller(val context: Context, val contextFragment: LocalFragment) {
         }
 
         // Mostrar el diálogo de edición
-        val myActivity = context as MainScreenActivity
+        val myActivity = context as MainActivity
         editDialog.show(myActivity.supportFragmentManager, "Editamos el local")
 
         // Configurar una función de callback para actualizar el local después de editar
@@ -89,7 +82,7 @@ class Controller(val context: Context, val contextFragment: LocalFragment) {
     // Función para actualizar el local en la lista y notificar al adaptador
     private fun okOnEditLocal(editLocal: Local, pos: Int) {
         listLocales[pos] = editLocal
-        adapterLocal.notifyItemChanged(pos)
+        localAdapter.notifyItemChanged(pos)
 
         (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(pos, 20)
     }
@@ -99,17 +92,39 @@ class Controller(val context: Context, val contextFragment: LocalFragment) {
     private fun delLocal(pos: Int) {
         Toast.makeText(context, "Local $pos borrado", Toast.LENGTH_LONG).show()
         listLocales.removeAt(pos)
-        adapterLocal.notifyItemRemoved(pos)
+        localAdapter.notifyItemRemoved(pos)
     }
 
 
 
     private fun addLocal() {
-        Toast.makeText(context, "Añadir nuevo local", Toast.LENGTH_SHORT)
-        val dialog = AddLocalDFragment()/*{
-            hotel -> okOnNewLocal(Local)
-        }*/
-        val myActivity = context as MainScreenActivity
-        dialog.show(myActivity.supportFragmentManager, "Añadimos un nuevo local")
+
+        val newLocal = Local("", "", "", 5)
+
+        val editDialog = LocalDialogFragmentCU().apply {
+            // Configurar el Bundle con los datos del local seleccionado
+            arguments = Bundle().apply {
+                putString(ArgumentsLocal.ARGUMENT_NAME, newLocal.nombre)
+                putString(ArgumentsLocal.ARGUMENT_ADDRESS, newLocal.direccion)
+                putString(ArgumentsLocal.ARGUMENT_PHONE, newLocal.contacto)
+                putInt(ArgumentsLocal.ARGUMENT_RATE, newLocal.valoracion)
+            }
+        }
+
+        // Mostrar el diálogo de edición
+        val myActivity = context as MainActivity
+        editDialog.show(myActivity.supportFragmentManager, "Creamos el local")
+
+        // Configurar una función de callback para actualizar el local después de editar
+        editDialog.onUpdate = { updatedLocal ->
+            okOnAddLocal(updatedLocal)
+        }
+    }
+
+    private fun okOnAddLocal(newLocal: Local) {
+        listLocales.add(newLocal)
+        localAdapter.notifyItemInserted(listLocales.size + 1)
+
+        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(listLocales.size + 1, 20)
     }
 }

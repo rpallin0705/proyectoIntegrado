@@ -7,7 +7,7 @@ import com.example.logincardview.R
 import com.example.logincardview.databinding.ActivityLocalBinding
 import com.example.logincardview.models.Local
 
-class ViewLocal(view : View,
+class LocalView(view : View,
                 var deleteOnClick : (Int) -> Unit,
                 var updateOnClick : (Int) -> Unit
 ) : RecyclerView.ViewHolder(view) {

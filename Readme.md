@@ -51,7 +51,7 @@ Este archivo define el `ViewHolder` para cada ítem de la lista dentro del `Recy
 
 ## Controller
 
-### `Controller.kt`
+### `LocalController.kt`
 
 Este archivo define la clase `Controller`, que maneja la lógica de negocio y la interacción entre los datos y la interfaz de usuario. Su principal tarea es gestionar la lista de restaurantes y configurar el adaptador para el `RecyclerView`.
 
@@ -70,7 +70,7 @@ Este archivo define la clase `Controller`, que maneja la lógica de negocio y la
 
 ## Dao
 
-### `DaoLocal.kt`
+### `LocalDao.kt`
 
 Este archivo define la clase `DaoLocal`, que implementa la interfaz `InterfaceDao` y maneja el acceso a los datos de los restaurantes. Actúa como el objeto de acceso a datos (DAO) y permite interactuar con la fuente de datos de manera centralizada.
 
@@ -82,7 +82,7 @@ Este archivo define la clase `DaoLocal`, que implementa la interfaz `InterfaceDa
 2. **Métodos**:
    - `getDataLocals()`: Implementa el método de la interfaz `InterfaceDao`. Este método devuelve la lista de restaurantes (locales) de la clase `LocalRepository`.
 
-### `DaoLocal2.kt`
+### `LocalDao2.kt`
 
 Este archivo define un objeto Singleton simplificado que también maneja el acceso a los datos de los locales, utilizando el patrón Singleton en Kotlin.
 
@@ -153,9 +153,9 @@ Este archivo define un repositorio (`LocalRepository`) que contiene una lista es
 
 - **`locales`** (`List<Local>`): Lista de objetos `Local` con los datos de los restaurantes (nombre, dirección, contacto y valoración).
 
-## MainScreenActivity.kt
+## MainActivity.kt
 
-El archivo `MainScreenActivity.kt` es la actividad principal que muestra el fragmento con la lista de restaurantes. Se encarga de gestionar la pantalla inicial de la app y su navegación.
+El archivo `MainActivity.kt` es la actividad principal que muestra el fragmento con la lista de restaurantes. Se encarga de gestionar la pantalla inicial de la app y su navegación.
 
 ## Conclusión
 
