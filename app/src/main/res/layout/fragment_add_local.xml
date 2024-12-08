@@ -34,7 +34,7 @@
                 android:weightSum="3">
 
                 <EditText
-                    android:id="@+id/local_name"
+                    android:id="@+id/edit_local_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -48,7 +48,7 @@
                     android:textSize="12sp" />
 
                 <EditText
-                    android:id="@+id/local_address"
+                    android:id="@+id/edit_local_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -62,7 +62,7 @@
                     android:textSize="12sp" />
 
                 <EditText
-                    android:id="@+id/local_phone"
+                    android:id="@+id/edit_local_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -89,7 +89,7 @@
             android:textColor="@color/white" />
 
         <EditText
-            android:id="@+id/editTextTextMultiLine"
+            android:id="@+id/edit_local_description"
             android:layout_width="match_parent"
             android:layout_height="75dp"
             android:ems="10"
@@ -150,7 +150,7 @@
             android:gravity="bottom">
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/positive_button"
                 android:layout_width="135dp"
                 android:layout_height="40dp"
                 android:layout_marginRight="48dp"
@@ -159,6 +159,7 @@
                 android:src="@drawable/add_va_white" />
 
             <ImageButton
+                android:id="@+id/negative_button"
                 android:layout_width="135dp"
                 android:layout_height="40dp"
                 android:layout_weight="0.75"

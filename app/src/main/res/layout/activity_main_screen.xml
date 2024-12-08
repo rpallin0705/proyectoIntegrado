@@ -39,8 +39,9 @@
 
     </LinearLayout>
 
-    <FrameLayout
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
+        android:name="com.example.logincardview.ui.LocalFragment"
         android:layout_width="match_parent"
         android:layout_height="650dp"
         android:layout_marginHorizontal="5dp"

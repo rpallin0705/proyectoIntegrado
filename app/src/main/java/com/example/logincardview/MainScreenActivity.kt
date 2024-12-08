@@ -13,6 +13,7 @@ import com.example.logincardview.ui.LocalFragment
 class MainScreenActivity : AppCompatActivity() {
 
     private lateinit var mainScreenBinding: ActivityMainScreenBinding
+    private lateinit var fragmentLocal: LocalFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,14 +42,12 @@ class MainScreenActivity : AppCompatActivity() {
         )
 
 
-        mainScreenBinding.btnAdd.setOnClickListener {
+        /*mainScreenBinding.btnAdd.setOnClickListener {
             updateButtonStates(buttons, it as ImageButton)
             val fm : FragmentManager = supportFragmentManager
             val addLocalDFragment = AddLocalDFragment()
             addLocalDFragment.show(fm, "add")
-
-
-        }
+        }*/
 
         mainScreenBinding.btnHome.setOnClickListener {
             updateButtonStates(buttons, it as ImageButton)
@@ -66,6 +65,10 @@ class MainScreenActivity : AppCompatActivity() {
             // Establecer el estado seleccionado solo en el botón presionado
             button.isSelected = (button == selectedButton)
         }
+    }
+
+    public fun getMainScreenBinding() : ActivityMainScreenBinding {
+        return this.mainScreenBinding
     }
 
 }

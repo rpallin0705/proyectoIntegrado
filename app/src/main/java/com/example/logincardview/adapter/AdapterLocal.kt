@@ -9,7 +9,8 @@ import com.example.logincardview.models.Local
 
 class AdapterLocal (
     var listLocal : MutableList<Local>,
-    var deleteOnClick : (Int) ->  Unit
+    var deleteOnClick : (Int) ->  Unit,
+    var updateOnClick : (Int) -> Unit
 ) : RecyclerView.Adapter<ViewLocal> (){
 
   //Este método me creará un objeto de tipo ViewHolderLocal, por cada objeto de la listLocal
@@ -18,12 +19,13 @@ class AdapterLocal (
         val layoutItemLocal = R.layout.activity_local
         return ViewLocal(
             layoutInflater.inflate(layoutItemLocal, parent, false),
-            deleteOnClick)
+            deleteOnClick,
+            updateOnClick)
     }
 
     //Inmediatamente de crear el objeto ViewHodlerLocal, deberá renderizar la vista
     override fun onBindViewHolder(holder: ViewLocal, position: Int) {
-        holder.renderize(listLocal.get(position))
+        holder.renderize(listLocal[position])
     }
 
 

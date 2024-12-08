@@ -1,18 +1,16 @@
 package com.example.logincardview.adapter
 
-import android.icu.text.Transliterator.Position
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import com.example.logincardview.R
 import com.example.logincardview.databinding.ActivityLocalBinding
-import com.example.logincardview.databinding.ActivityMainScreenBinding
 import com.example.logincardview.models.Local
 
-class ViewLocal(view : View, var deleteOnClick : (Int) -> Unit) : RecyclerView.ViewHolder(view) {
+class ViewLocal(view : View,
+                var deleteOnClick : (Int) -> Unit,
+                var updateOnClick : (Int) -> Unit
+) : RecyclerView.ViewHolder(view) {
 
     private val binding = ActivityLocalBinding.bind(view)
 
@@ -35,6 +33,11 @@ class ViewLocal(view : View, var deleteOnClick : (Int) -> Unit) : RecyclerView.V
     private fun setOnClickListener(position : Int){
         binding.deleteBtn.setOnClickListener {
             deleteOnClick(position)
+        }
+
+        binding.editBtn.setOnClickListener {
+            // Crear local con los elementos del xml y pasar a la funcion de abajo
+            updateOnClick(position)
         }
     }
 }
