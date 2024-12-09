@@ -80,7 +80,7 @@ class LocalController(private val context: Context, private val contextFragment:
         }
     }
 
-    // Función para actualizar el local en la lista y notificar al adaptador
+    // TODO Hacer que al editar el local el fondo del carview cambie de color momentaneamente
     private fun okOnEditLocal(editLocal: Local, pos: Int) {
         listLocales[pos] = editLocal
         localAdapter.notifyItemChanged(pos)
@@ -125,8 +125,10 @@ class LocalController(private val context: Context, private val contextFragment:
 
     private fun okOnAddLocal(newLocal: Local) {
         listLocales.add(newLocal)
-        localAdapter.notifyItemInserted(listLocales.size + 1)
 
-        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(listLocales.size + 1, 20)
+        localAdapter.notifyItemInserted(listLocales.size - 1)
+
+        (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(listLocales.size - 1, 20)
     }
+
 }
