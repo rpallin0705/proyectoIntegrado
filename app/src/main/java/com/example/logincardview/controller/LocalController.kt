@@ -66,6 +66,7 @@ class LocalController(private val context: Context, private val contextFragment:
                 putString(ArgumentsLocal.ARGUMENT_ADDRESS, localToUpdate.direccion)
                 putString(ArgumentsLocal.ARGUMENT_PHONE, localToUpdate.contacto)
                 putInt(ArgumentsLocal.ARGUMENT_RATE, localToUpdate.valoracion)
+                putString(ArgumentsLocal.ARGUMENT_DESCRIPTION, localToUpdate.descripcion)
             }
         }
 
@@ -99,7 +100,7 @@ class LocalController(private val context: Context, private val contextFragment:
 
     private fun addLocal() {
 
-        val newLocal = Local("", "", "", 5)
+        val newLocal = Local("", "", "", 5, "")
 
         val editDialog = LocalDialogFragmentCU().apply {
             // Configurar el Bundle con los datos del local seleccionado
@@ -108,6 +109,7 @@ class LocalController(private val context: Context, private val contextFragment:
                 putString(ArgumentsLocal.ARGUMENT_ADDRESS, newLocal.direccion)
                 putString(ArgumentsLocal.ARGUMENT_PHONE, newLocal.contacto)
                 putInt(ArgumentsLocal.ARGUMENT_RATE, newLocal.valoracion)
+                putString(ArgumentsLocal.ARGUMENT_DESCRIPTION, newLocal.descripcion)
             }
         }
 

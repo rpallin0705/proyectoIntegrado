@@ -4,7 +4,8 @@ class Local (
     var nombre : String,
     var direccion : String,
     var contacto : String,
-    var valoracion: Int
+    var valoracion : Int,
+    var descripcion : String
     ) {
 
     override fun toString(): String {
@@ -13,6 +14,7 @@ class Local (
                 "direccion : \"${direccion}\"" +
                 "contacto : \"${contacto}\"" +
                 "valoracion : \"${valoracion}\"" +
+                "descipcion : \"${descripcion}\"" +
                 "}"
     }
 }

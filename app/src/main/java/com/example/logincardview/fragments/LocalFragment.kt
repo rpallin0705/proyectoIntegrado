@@ -11,7 +11,7 @@ import com.example.logincardview.R
 import com.example.logincardview.controller.LocalController
 import com.example.logincardview.databinding.FragmentLocalBinding
 
-class LocalFragment() : Fragment(R.layout.fragment_local) {
+class LocalFragment : Fragment(R.layout.fragment_local) {
 
     private lateinit var bindingFragment: FragmentLocalBinding
     private lateinit var localController: LocalController

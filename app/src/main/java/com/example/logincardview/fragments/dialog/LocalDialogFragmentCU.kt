@@ -48,11 +48,14 @@ class LocalDialogFragmentCU : DialogFragment() {
     }
 
     private fun recoverDataLayout(view: View): Local {
-        val name = view.findViewById<EditText>(R.id.edit_local_name).text.toString()
-        val address = view.findViewById<EditText>(R.id.edit_local_address).text.toString()
-        val phone = view.findViewById<EditText>(R.id.edit_local_phone).text.toString()
+        val binding = FragmentAddLocalBinding.bind(view)
 
-        return Local(name, address, phone, 5)
+        val name = binding.editLocalName.text.toString()
+        val address = binding.editLocalAddress.text.toString()
+        val phone = binding.editLocalPhone.text.toString()
+        val description = binding.editLocalDescription.text.toString()
+
+        return Local(name, address, phone, 5, description)
     }
 
     private fun setValuesIntoDialog(viewDialogEditLocal: View, arguments: Bundle?) {
@@ -61,6 +64,7 @@ class LocalDialogFragmentCU : DialogFragment() {
             binding.editLocalName.setText(it.getString(ArgumentsLocal.ARGUMENT_NAME))
             binding.editLocalPhone.setText(it.getString(ArgumentsLocal.ARGUMENT_PHONE))
             binding.editLocalAddress.setText(it.getString(ArgumentsLocal.ARGUMENT_ADDRESS))
+            binding.editLocalDescription.setText(it.getString(ArgumentsLocal.ARGUMENT_DESCRIPTION))
         }
     }
 }

@@ -36,12 +36,9 @@ class MainActivity : AppCompatActivity() {
         )
 
 
-        /*mainScreenBinding.btnAdd.setOnClickListener {
+        mainScreenBinding.btnAdd.setOnClickListener {
             updateButtonStates(buttons, it as ImageButton)
-            val fm : FragmentManager = supportFragmentManager
-            val addLocalDFragment = LocalDialogFragmentCU()
-            addLocalDFragment.show(fm, "add")
-        }*/
+        }
 
         mainScreenBinding.btnHome.setOnClickListener {
             updateButtonStates(buttons, it as ImageButton)
@@ -54,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         updateButtonStates(buttons, mainScreenBinding.btnHome)
     }
 
-    private fun updateButtonStates(buttons: List<ImageButton>, selectedButton: ImageButton) {
+     fun updateButtonStates(buttons: List<ImageButton>, selectedButton: ImageButton) {
         buttons.forEach { button ->
             // Establecer el estado seleccionado solo en el botón presionado
             button.isSelected = (button == selectedButton)
