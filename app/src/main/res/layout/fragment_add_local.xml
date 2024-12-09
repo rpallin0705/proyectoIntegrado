@@ -70,7 +70,7 @@
                     android:gravity="center_vertical"
                     android:hint="Teléfono:"
                     android:inputType="phone"
-                    android:maxLength="9"
+                    android:maxLength="15"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textSize="12sp" />
@@ -94,7 +94,7 @@
             android:ems="10"
             android:gravity="start|top"
             android:maxLength="170"
-            android:text="Pequeño restaurante"
+            android:text=""
             android:textAlignment="textStart"
             android:textColor="@color/white"
             android:textSize="10sp" />

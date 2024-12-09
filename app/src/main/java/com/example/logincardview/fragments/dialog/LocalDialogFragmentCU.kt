@@ -79,6 +79,7 @@ class LocalDialogFragmentCU : DialogFragment() {
         return Local(name, address, phone, selectedRating, description)
     }
 
+    // todo CARGAR VALORACION DEL LOCAL A EDITAR EN EL DIALOGO
     private fun setValuesIntoDialog(viewDialogEditLocal: View, arguments: Bundle?) {
         val binding = FragmentAddLocalBinding.bind(viewDialogEditLocal)
         arguments?.let {
