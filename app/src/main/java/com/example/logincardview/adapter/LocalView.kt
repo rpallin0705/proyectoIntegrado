@@ -7,15 +7,25 @@ import com.example.logincardview.R
 import com.example.logincardview.databinding.ActivityLocalBinding
 import com.example.logincardview.models.Local
 
-class LocalView(view : View,
-                var deleteOnClick : (Int) -> Unit,
-                var updateOnClick : (Int) -> Unit
+class LocalView(
+    view: View,
+    var deleteOnClick: (Int) -> Unit,
+    var updateOnClick: (Int) -> Unit
 ) : RecyclerView.ViewHolder(view) {
 
     private val binding = ActivityLocalBinding.bind(view)
 
-    //Método para renderizar el Local
-    fun renderize(local : Local){
+    // Lista de estrellas para actualizar su estado
+    private val starImages = listOf(
+        binding.imageView3,
+        binding.imageView4,
+        binding.imageView5,
+        binding.imageView6,
+        binding.imageView7
+    )
+
+    // Método para renderizar el Local
+    fun renderize(local: Local) {
         binding.localName.text = local.nombre
         binding.localAddress.text = local.direccion
         binding.localPhone.text = local.contacto
@@ -25,19 +35,32 @@ class LocalView(view : View,
             .centerCrop()
             .into(binding.localImage)
 
-        // Llamar a setOnClickListener para el botón de eliminar
+        // Actualiza las estrellas según el rate
+        updateStars(local.valoracion)
+
+        // Asignar los listeners
         setOnClickListener(adapterPosition)
     }
 
-    //Método para asignar el click al botón de eliminar
-    private fun setOnClickListener(position : Int){
+    // Método para asignar el click al botón de eliminar
+    private fun setOnClickListener(position: Int) {
         binding.deleteBtn.setOnClickListener {
             deleteOnClick(position)
         }
 
         binding.editBtn.setOnClickListener {
-            // Crear local con los elementos del xml y pasar a la funcion de abajo
             updateOnClick(position)
+        }
+    }
+
+    // Método para actualizar las estrellas según la valoración
+    private fun updateStars(rate: Int) {
+        for (i in starImages.indices) {
+            if (i < rate) {
+                starImages[i].setImageResource(R.drawable.baseline_star_24) // Estrella rellena
+            } else {
+                starImages[i].setImageResource(R.drawable.baseline_star_outline_24) // Estrella vacía
+            }
         }
     }
 }

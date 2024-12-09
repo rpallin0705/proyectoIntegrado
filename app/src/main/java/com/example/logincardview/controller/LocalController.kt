@@ -91,7 +91,7 @@ class LocalController(private val context: Context, private val contextFragment:
 
 
     private fun delLocal(pos: Int) {
-        Toast.makeText(context, "Local $pos borrado", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Local ${listLocales[pos].nombre} borrado", Toast.LENGTH_LONG).show()
         listLocales.removeAt(pos)
         localAdapter.notifyItemRemoved(pos)
     }

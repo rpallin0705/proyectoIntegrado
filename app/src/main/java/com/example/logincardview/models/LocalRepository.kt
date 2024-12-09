@@ -4,73 +4,73 @@ object LocalRepository {
     val locales: List<Local> = listOf(
         Local(
             "Sukiyabashi Jiro",
-            "4 Chome-2-15 Ginza, Chuo City, Tokyo 104-0061, Japan",
-            "+81 3-3535-3600",
+            "Calle Gran Vía, 12, 28013 Madrid, España",
+            "+34 911 123 456",
             5,
             "Famoso restaurante de sushi dirigido por el maestro Jiro Ono, conocido por su técnica impecable y su menú omakase."
         ),
         Local(
             "Narisawa",
-            "2-6-15 Minami Aoyama, Minato City, Tokyo 107-0062, Japan",
-            "+81 3-5785-0799",
-            5,
+            "Passeig de Gràcia, 45, 08007 Barcelona, España",
+            "+34 932 345 678",
+            4,
             "Restaurante innovador que combina técnicas francesas con ingredientes japoneses, destacando la sostenibilidad y la naturaleza."
         ),
         Local(
             "Kyo Aji",
-            "3 Chome-3-5 Shinbashi, Minato City, Tokyo 105-0004, Japan",
-            "+81 3-3581-9678",
-            5,
+            "Avenida de la Constitución, 18, 41004 Sevilla, España",
+            "+34 954 987 654",
+            3,
             "Auténtico restaurante kaiseki que ofrece platos de temporada preparados con precisión y maestría."
         ),
         Local(
             "Kitcho Arashiyama",
-            "58 Susukinobaba-cho, Saga Tenryuji, Ukyo-ku, Kyoto 616-8385, Japan",
-            "+81 75-881-1101",
+            "Calle Larios, 10, 29005 Málaga, España",
+            "+34 952 321 789",
             5,
-            "Experiencia culinaria kaiseki de lujo en un entorno tradicional de Kioto con vistas serenas."
+            "Experiencia culinaria kaiseki de lujo en un entorno tradicional con vistas serenas."
         ),
         Local(
             "Gion Sasaki",
-            "570-123 Gionmachi Minamigawa, Higashiyama-ku, Kyoto 605-0074, Japan",
-            "+81 75-551-5000",
-            5,
+            "Calle Alcalá, 25, 28014 Madrid, España",
+            "+34 910 456 789",
+            2,
             "Restaurante moderno de kaiseki que ofrece una mezcla única de creatividad y tradición."
         ),
         Local(
             "Mizai",
-            "Gion Maruyama, Higashiyama-ku, Kyoto 605-0071, Japan",
-            "+81 75-551-3310",
-            5,
+            "Calle Colón, 34, 46004 Valencia, España",
+            "+34 963 258 741",
+            4,
             "Restaurante exclusivo con un menú kaiseki cuidadosamente elaborado y una atmósfera íntima."
         ),
         Local(
             "Sushi Saito",
-            "Ark Hills South Tower, 1-4-5 Roppongi, Minato City, Tokyo 106-0032, Japan",
-            "+81 3-3589-4412",
+            "Calle Balmes, 15, 08007 Barcelona, España",
+            "+34 934 567 890",
             5,
-            "Uno de los mejores restaurantes de sushi de Tokio, conocido por su pescado fresco y la destreza del chef Takashi Saito."
+            "Uno de los mejores restaurantes de sushi, conocido por su pescado fresco y la destreza del chef."
         ),
         Local(
             "Nihonryori Ryugin",
-            "7 Chome-17-24 Roppongi, Minato City, Tokyo 106-0032, Japan",
-            "+81 3-3423-8006",
-            5,
+            "Paseo del Prado, 8, 28014 Madrid, España",
+            "+34 917 654 321",
+            3,
             "Restaurante de alta gastronomía que fusiona la cocina japonesa con técnicas modernas e innovadoras."
         ),
         Local(
             "Ishikawa",
-            "5 Chome-37 Kagurazaka, Shinjuku City, Tokyo 162-0825, Japan",
-            "+81 3-5225-0173",
-            5,
+            "Calle San Fernando, 15, 41001 Sevilla, España",
+            "+34 955 123 321",
+            1,
             "Restaurante kaiseki que ofrece platos delicados y elegantes en una atmósfera tranquila y sofisticada."
         ),
         Local(
             "Sushi Mizutani",
-            "9-2-10 Ginza, Chuo City, Tokyo 104-0061, Japan",
-            "+81 3-3573-5258",
-            5,
-            "Restaurante de sushi tradicional en Ginza, famoso por la precisión del chef Mizutani y su compromiso con la calidad."
+            "Calle Mayor, 20, 28005 Madrid, España",
+            "+34 911 987 654",
+            4,
+            "Restaurante de sushi tradicional, famoso por la precisión del chef y su compromiso con la calidad."
         )
     )
 }

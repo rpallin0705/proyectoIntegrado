@@ -16,6 +16,11 @@ class LocalDialogFragmentCU : DialogFragment() {
     // Callback para devolver el local editado
     var onUpdate: ((Local) -> Unit)? = null
 
+    // Variable para guardar la valoración seleccionada
+    private var selectedRating = 0
+
+    private lateinit var stars: List<ImageButton>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,10 +34,26 @@ class LocalDialogFragmentCU : DialogFragment() {
         // Configurar los valores iniciales
         setValuesIntoDialog(viewDialogAddLocal, arguments)
 
+        // Inicialización de las estrellas
+        val star1 = viewDialogAddLocal.findViewById<ImageButton>(R.id.star1)
+        val star2 = viewDialogAddLocal.findViewById<ImageButton>(R.id.star2)
+        val star3 = viewDialogAddLocal.findViewById<ImageButton>(R.id.star3)
+        val star4 = viewDialogAddLocal.findViewById<ImageButton>(R.id.star4)
+        val star5 = viewDialogAddLocal.findViewById<ImageButton>(R.id.star5)
+
+        stars = listOf(star1, star2, star3, star4, star5)
+
+        // Asigna un OnClickListener a cada estrella
+        for (i in stars.indices) {
+            stars[i].setOnClickListener {
+                updateStars(i + 1)
+            }
+        }
+
         btnConfirm.setOnClickListener {
             val updatedLocal = recoverDataLayout(viewDialogAddLocal)
 
-            if (updatedLocal.nombre.isEmpty() || updatedLocal.direccion.isEmpty() || updatedLocal.contacto.isEmpty()) {
+            if (updatedLocal.nombre.isEmpty() || updatedLocal.direccion.isEmpty() || updatedLocal.contacto.isEmpty() || updatedLocal.descripcion.isEmpty()) {
                 Toast.makeText(activity, "Algún campo está vacío", Toast.LENGTH_LONG).show()
             } else {
                 onUpdate?.invoke(updatedLocal)  // Llamar a la función de callback
@@ -55,7 +76,7 @@ class LocalDialogFragmentCU : DialogFragment() {
         val phone = binding.editLocalPhone.text.toString()
         val description = binding.editLocalDescription.text.toString()
 
-        return Local(name, address, phone, 5, description)
+        return Local(name, address, phone, selectedRating, description)
     }
 
     private fun setValuesIntoDialog(viewDialogEditLocal: View, arguments: Bundle?) {
@@ -65,6 +86,19 @@ class LocalDialogFragmentCU : DialogFragment() {
             binding.editLocalPhone.setText(it.getString(ArgumentsLocal.ARGUMENT_PHONE))
             binding.editLocalAddress.setText(it.getString(ArgumentsLocal.ARGUMENT_ADDRESS))
             binding.editLocalDescription.setText(it.getString(ArgumentsLocal.ARGUMENT_DESCRIPTION))
+        }
+    }
+
+    // Función para actualizar las estrellas y guardar la valoración
+    private fun updateStars(rating: Int) {
+        selectedRating = rating
+
+        for (i in stars.indices) {
+            if (i < rating) {
+                stars[i].setImageResource(R.drawable.baseline_star_24) // Estrella rellena
+            } else {
+                stars[i].setImageResource(R.drawable.baseline_star_outline_24) // Estrella vacía
+            }
         }
     }
 }
