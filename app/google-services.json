@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "262113604191",
+    "project_id": "proyecto-integrado-7cfb7",
+    "storage_bucket": "proyecto-integrado-7cfb7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262113604191:android:1c88d98c7846473ab8a1ea",
+        "android_client_info": {
+          "package_name": "com.example.logincardview"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZfJVTu8tKXHBs3K6EgExmzB5Ebn9z08M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
