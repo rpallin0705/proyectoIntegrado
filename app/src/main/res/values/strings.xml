@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">loginCardView</string>
     <string name="login">Login</string>
-    <string name="not_yet_registered_sing_up_now">Not yet registered? SingUp now</string>
+    <string name="not_yet_registered_sing_up_now">¿Tienes cuenta? Regístrate...</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="kizuna_gourmet">KIZUNA GOURMET</string>
@@ -17,6 +17,7 @@
     <string name="restaurant_2_phone">+34 622 573 233</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="log_in">Inicia sesión...</string>
 
 
 </resources>
