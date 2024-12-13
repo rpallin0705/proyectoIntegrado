@@ -144,7 +144,7 @@ class LoginActivity : AppCompatActivity() {
                     } catch (e: FirebaseAuthInvalidCredentialsException) {
                         msg = if (e.message?.contains("There is no user record corresponding to this identifier") == true) {
                             "El usuario no existe"
-                        } else "Contraseña incorrecta"
+                        } else "Contraseña incorrecta o usuario no registrado"
                     } catch (e: Exception) {
                         msg = e.message.toString()
                     }
