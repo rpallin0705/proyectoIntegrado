@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">loginCardView</string>
     <string name="login">Login</string>
-    <string name="not_yet_registered_sing_up_now">¿Tienes cuenta? Regístrate...</string>
+    <string name="not_yet_registered_sing_up_now">Regístrate...</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
     <string name="kizuna_gourmet">KIZUNA GOURMET</string>
