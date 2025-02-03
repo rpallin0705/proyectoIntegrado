@@ -1,5 +1,8 @@
 package com.example.logincardview.models
 
+/**
+ * Clase que contiene en memoria la lista de Restaurantes
+ */
 object LocalRepository {
     val locales: List<Local> = listOf(
         Local(
