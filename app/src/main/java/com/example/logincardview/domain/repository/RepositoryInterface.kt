@@ -1,5 +1,5 @@
 package com.example.logincardview.domain.repository
 
-interface RestaurantRepositoryInterface<T> {
+interface RepositoryInterface<T> {
     suspend fun getAll() : List<T>
 }
