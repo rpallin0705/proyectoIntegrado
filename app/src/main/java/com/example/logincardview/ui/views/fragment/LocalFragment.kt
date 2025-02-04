@@ -1,4 +1,4 @@
-package com.example.logincardview.ui
+package com.example.logincardview.ui.views.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.logincardview.MainActivity
 import com.example.logincardview.R
 import com.example.logincardview.controller.LocalController
 import com.example.logincardview.databinding.FragmentLocalBinding
+import com.example.logincardview.ui.views.activity.MainActivity
 
 class LocalFragment : Fragment(R.layout.fragment_local) {
 

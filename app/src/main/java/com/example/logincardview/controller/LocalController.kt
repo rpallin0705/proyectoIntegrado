@@ -6,12 +6,12 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.logincardview.MainActivity
 import com.example.logincardview.adapter.LocalAdapter
 import com.example.logincardview.dao.LocalDao
 import com.example.logincardview.models.ArgumentsLocal
 import com.example.logincardview.models.Local
-import com.example.logincardview.ui.LocalFragment
+import com.example.logincardview.ui.views.activity.MainActivity
+import com.example.logincardview.ui.views.fragment.LocalFragment
 
 class LocalController(private val context: Context, private val contextFragment: LocalFragment) {
     private lateinit var listLocales: MutableList<Local>
@@ -26,7 +26,6 @@ class LocalController(private val context: Context, private val contextFragment:
         setScrollWithOffSetLinearLayout()
         listLocales = LocalDao.myDao.getDataLocals().toMutableList()
         setAdapter()
-        initOnClickListener()
     }
 
     private fun setScrollWithOffSetLinearLayout() {
@@ -36,13 +35,6 @@ class LocalController(private val context: Context, private val contextFragment:
             .layoutManager as LinearLayoutManager
     }
 
-    private fun initOnClickListener() {
-        val myActivity = context as MainActivity
-        // listener de edit y delete
-        myActivity.getMainScreenBinding().btnAdd.setOnClickListener {
-            addLocal()
-        }
-    }
 
     private fun setAdapter() {
 

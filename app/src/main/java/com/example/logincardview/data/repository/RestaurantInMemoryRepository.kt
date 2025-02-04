@@ -7,7 +7,7 @@ import com.example.logincardview.domain.repository.RepositoryInterface
 /**
  * Clase que implementa la interfaz RepositoryInterface
  */
-class InMemoryRepository(
+class RestaurantInMemoryRepository(
     private val restaurantService: RestaurantService = RestaurantService()
 ) : RepositoryInterface<Restaurant> {
 

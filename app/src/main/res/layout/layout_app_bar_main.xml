@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- AppBarLayout contiene la Toolbar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.AppCompat.Light">
+
+        <!-- Toolbar configurado con elevación y tema -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:elevation="4dp"
+            android:background="@color/black"
+            app:popupTheme="@style/Theme.AppCompat.Light"
+            android:title="Mi Aplicación" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- El contenido principal de la actividad -->
+    <!--<include layout="@layout/content_ppal" />-->
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

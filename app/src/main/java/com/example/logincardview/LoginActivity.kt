@@ -1,9 +1,9 @@
+
 package com.example.logincardview
 
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -38,22 +38,23 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        init()
+        /*init()
         checkUserSession()
-        start()
+        start()*/
     }
+}
 
-    private fun init() {
+    /*private fun init() {
         this.auth = FirebaseAuth.getInstance()
         sharedPreferences = getSharedPreferences("login_prefs", MODE_PRIVATE)
         loadEmail() // Cargar el correo almacenado, si existe
     }
 
-    // Verifica si hay una sesión iniciada y redirige a MainActivity si es el caso
+    // Verifica si hay una sesión iniciada y redirige a MainActivityantiguo si es el caso
     private fun checkUserSession() {
         val currentUser = auth.currentUser
         if (currentUser != null && currentUser.isEmailVerified) {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, MainActivityantiguo::class.java)
             startActivity(intent)
             finish()
         }
@@ -82,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
                     startLogin(email, pass) { result, msg ->
                         Toast.makeText(this@LoginActivity, msg, Toast.LENGTH_LONG).show()
                         if (result) {
-                            intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            intent = Intent(this@LoginActivity, MainActivityantiguo::class.java)
                             startActivity(intent)
                             finish()
                         }
@@ -120,8 +121,9 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
+*/
 
-    private fun startLogin(user: String, pass: String, onResult: (Boolean, String) -> Unit) {
+/*private fun startLogin(user: String, pass: String, onResult: (Boolean, String) -> Unit) {
         auth.signInWithEmailAndPassword(user, pass)
             .addOnCompleteListener { taskSignIn ->
                 var msg = ""
@@ -129,7 +131,7 @@ class LoginActivity : AppCompatActivity() {
                     val possibleUser = auth.currentUser
                     if (possibleUser?.isEmailVerified == true) {
                         saveEmail(user) // Guardar el correo en SharedPreferences
-                        val intent = Intent(this, MainActivity::class.java)
+                        val intent = Intent(this, MainActivityantiguo::class.java)
                         startActivity(intent)
                         finish()
                     } else {
@@ -150,7 +152,8 @@ class LoginActivity : AppCompatActivity() {
                     }
                     onResult(false, msg)
                 }
-            }
+            }*//*
+
     }
 
     private fun saveEmail(email: String) {
@@ -184,3 +187,4 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 }
+*/
