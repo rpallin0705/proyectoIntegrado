@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        setSupportActionBar(binding.myToolbar)
+        setSupportActionBar(binding.appBarMain.myToolbar)
 
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         NavigationUI.setupWithNavController(binding.myNavView, navController)
 
 
-        binding.myToolbar.setNavigationOnClickListener {
+        binding.appBarMain.myToolbar.setNavigationOnClickListener {
             binding.myDrawer.open()
         }
     }
