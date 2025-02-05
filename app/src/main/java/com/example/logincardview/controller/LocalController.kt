@@ -1,12 +1,12 @@
 package com.example.logincardview.controller
 
-import LocalDialogFragmentCU
+import com.example.logincardview.ui.views.fragment.LocalDialogFragmentCU
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.logincardview.adapter.LocalAdapter
+import com.example.logincardview.ui.adapter.LocalAdapter
 import com.example.logincardview.dao.LocalDao
 import com.example.logincardview.models.ArgumentsLocal
 import com.example.logincardview.models.Local
