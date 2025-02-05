@@ -1,16 +1,14 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="Theme.PlantillaDrawer" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
         <item name="colorPrimary">@color/black</item>
         <item name="colorPrimaryVariant">@color/black</item>
         <item name="colorOnPrimary">@color/orange</item>
-        <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/orange</item>
         <item name="colorSecondaryVariant">@color/orange</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:textColorPrimary">@color/orange</item>
+        <item name="android:textColorSecondary">@color/orange</item>
     </style>
     <style name="Theme.PlantillaDrawer.NoActionBar">
         <item name="windowActionBar">false</item>

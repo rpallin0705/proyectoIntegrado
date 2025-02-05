@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/localFragment"
         android:name="com.example.logincardview.ui.views.fragment.LocalFragment"
-        android:label="fragment_local"
+        android:label="Restaurantes Kizuna"
         tools:layout="@layout/fragment_local" >
         <action
             android:id="@+id/action_localFragment_to_settingsFragment"
@@ -17,6 +17,6 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.logincardview.ui.views.fragment.SettingsFragment"
-        android:label="fragment_settings"
+        android:label="Settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

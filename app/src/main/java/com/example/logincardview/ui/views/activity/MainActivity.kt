@@ -1,6 +1,7 @@
 package com.example.logincardview.ui.views.activity
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -19,24 +20,24 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         setSupportActionBar(binding.appBarMain.myToolbar)
-
+        supportActionBar?.setDisplayShowTitleEnabled(false) // Desactivar título predeterminado
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-
-        appBarConfiguration = AppBarConfiguration(navController.graph, binding.myDrawer)
+        appBarConfiguration = AppBarConfiguration(setOf(R.id.localFragment), binding.myDrawer)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
 
         NavigationUI.setupWithNavController(binding.myNavView, navController)
 
+        // Escuchar cambios de fragmento para actualizar el título manualmente
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.appBarMain.myToolbar.findViewById<TextView>(R.id.toolbar_title).text = destination.label
+        }
 
         binding.appBarMain.myToolbar.setNavigationOnClickListener {
             binding.myDrawer.open()
