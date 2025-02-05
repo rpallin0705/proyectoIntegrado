@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.logincardview.R
 import com.example.logincardview.controller.LocalController
-import com.example.logincardview.databinding.FragmentLocalBinding
+import com.example.logincardview.databinding.FragmentRestaurantBinding
 import com.example.logincardview.ui.views.activity.MainActivity
 
-class LocalFragment : Fragment(R.layout.fragment_local) {
+class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
-    private lateinit var bindingFragment: FragmentLocalBinding
+    private lateinit var bindingFragment: FragmentRestaurantBinding
     private lateinit var localController: LocalController
 
     override fun onCreateView(
@@ -22,7 +22,7 @@ class LocalFragment : Fragment(R.layout.fragment_local) {
         savedInstanceState: Bundle?
     ): View {
 
-        bindingFragment = FragmentLocalBinding.inflate(inflater, container, false)
+        bindingFragment = FragmentRestaurantBinding.inflate(inflater, container, false)
 
         initRecyclerView()
 
@@ -35,7 +35,7 @@ class LocalFragment : Fragment(R.layout.fragment_local) {
         bindingFragment.recyclerViewLocal.layoutManager = LinearLayoutManager(requireContext())
     }
 
-    fun getLocalFragmentBinding(): FragmentLocalBinding {
+    fun getLocalFragmentBinding(): FragmentRestaurantBinding {
         return this.bindingFragment
     }
 }

@@ -96,7 +96,7 @@ Este archivo define un objeto Singleton simplificado que también maneja el acce
 
 ## Fragments
 
-### `LocalFragment.kt`
+### `RestaurantFragment.kt`
 
 Este archivo define un fragmento que muestra la lista de restaurantes en un `RecyclerView`. El fragmento obtiene los datos de los restaurantes desde el repositorio y los presenta utilizando un adaptador personalizado.
 

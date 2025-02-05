@@ -1,21 +1,21 @@
 package com.example.logincardview.controller
 
-import com.example.logincardview.ui.views.fragment.LocalDialogFragmentCU
+import com.example.logincardview.ui.views.fragment.RestaurantDialogFragmentCU
 import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.logincardview.ui.adapter.LocalAdapter
+import com.example.logincardview.ui.adapter.RestaurantAdapter
 import com.example.logincardview.dao.LocalDao
 import com.example.logincardview.models.ArgumentsLocal
 import com.example.logincardview.models.Local
 import com.example.logincardview.ui.views.activity.MainActivity
-import com.example.logincardview.ui.views.fragment.LocalFragment
+import com.example.logincardview.ui.views.fragment.RestaurantFragment
 
-class LocalController(private val context: Context, private val contextFragment: LocalFragment) {
+class LocalController(private val context: Context, private val contextFragment: RestaurantFragment) {
     private lateinit var listLocales: MutableList<Local>
-    private lateinit var localAdapter: LocalAdapter
+    private lateinit var restaurantAdapter: RestaurantAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
 
     init {
@@ -38,20 +38,20 @@ class LocalController(private val context: Context, private val contextFragment:
 
     private fun setAdapter() {
 
-        localAdapter = LocalAdapter(
+        restaurantAdapter = RestaurantAdapter(
             listLocales,
             { pos: Int -> delLocal(pos) },
             { pos: Int -> updateLocal(pos) }
         )
 
-        contextFragment.getLocalFragmentBinding().recyclerViewLocal.adapter = localAdapter
+        contextFragment.getLocalFragmentBinding().recyclerViewLocal.adapter = restaurantAdapter
 
     }
 
     private fun updateLocal(pos: Int) {
         val localToUpdate = listLocales[pos]  // Obtener el local en la posición seleccionada
 
-        val editDialog = LocalDialogFragmentCU().apply {
+        val editDialog = RestaurantDialogFragmentCU().apply {
             // Configurar el Bundle con los datos del local seleccionado
             arguments = Bundle().apply {
                 putString(ArgumentsLocal.ARGUMENT_NAME, localToUpdate.nombre)
@@ -75,7 +75,7 @@ class LocalController(private val context: Context, private val contextFragment:
     // TODO Hacer que al editar el local el fondo del carview cambie de color momentaneamente
     private fun okOnEditLocal(editLocal: Local, pos: Int) {
         listLocales[pos] = editLocal
-        localAdapter.notifyItemChanged(pos)
+        restaurantAdapter.notifyItemChanged(pos)
 
         (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(pos, 20)
     }
@@ -85,7 +85,7 @@ class LocalController(private val context: Context, private val contextFragment:
     private fun delLocal(pos: Int) {
         Toast.makeText(context, "Local ${listLocales[pos].nombre} borrado", Toast.LENGTH_LONG).show()
         listLocales.removeAt(pos)
-        localAdapter.notifyItemRemoved(pos)
+        restaurantAdapter.notifyItemRemoved(pos)
     }
 
 
@@ -94,7 +94,7 @@ class LocalController(private val context: Context, private val contextFragment:
 
         val newLocal = Local("", "", "", 5, "")
 
-        val editDialog = LocalDialogFragmentCU().apply {
+        val editDialog = RestaurantDialogFragmentCU().apply {
             // Configurar el Bundle con los datos del local seleccionado
             arguments = Bundle().apply {
                 putString(ArgumentsLocal.ARGUMENT_NAME, newLocal.nombre)
@@ -118,7 +118,7 @@ class LocalController(private val context: Context, private val contextFragment:
     private fun okOnAddLocal(newLocal: Local) {
         listLocales.add(newLocal)
 
-        localAdapter.notifyItemInserted(listLocales.size - 1)
+        restaurantAdapter.notifyItemInserted(listLocales.size - 1)
 
         (layoutManager as LinearLayoutManager).scrollToPositionWithOffset(listLocales.size - 1, 20)
     }

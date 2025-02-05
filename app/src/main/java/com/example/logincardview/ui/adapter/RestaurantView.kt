@@ -4,16 +4,16 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.logincardview.R
-import com.example.logincardview.databinding.ActivityLocalBinding
+import com.example.logincardview.databinding.ActivityRestaurantBinding
 import com.example.logincardview.models.Local
 
-class LocalView(
+class RestaurantView(
     view: View,
     var deleteOnClick: (Int) -> Unit,
     var updateOnClick: (Int) -> Unit
 ) : RecyclerView.ViewHolder(view) {
 
-    private val binding = ActivityLocalBinding.bind(view)
+    private val binding = ActivityRestaurantBinding.bind(view)
 
     // Lista de estrellas para actualizar su estado
     private val starImages = listOf(

@@ -8,11 +8,11 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.example.logincardview.R
-import com.example.logincardview.databinding.FragmentAddLocalBinding
+import com.example.logincardview.databinding.FragmentAddRestaurantBinding
 import com.example.logincardview.models.ArgumentsLocal
 import com.example.logincardview.models.Local
 
-class LocalDialogFragmentCU : DialogFragment() {
+class RestaurantDialogFragmentCU : DialogFragment() {
 
     // Callback para devolver el local editado
     var onUpdate: ((Local) -> Unit)? = null
@@ -27,7 +27,7 @@ class LocalDialogFragmentCU : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewDialogAddLocal = inflater.inflate(R.layout.fragment_add_local, container, false)
+        val viewDialogAddLocal = inflater.inflate(R.layout.fragment_add_restaurant, container, false)
 
         val btnConfirm = viewDialogAddLocal.findViewById<ImageButton>(R.id.positive_button)
         val btnCancel = viewDialogAddLocal.findViewById<ImageButton>(R.id.negative_button)
@@ -70,7 +70,7 @@ class LocalDialogFragmentCU : DialogFragment() {
     }
 
     private fun recoverDataLayout(view: View): Local {
-        val binding = FragmentAddLocalBinding.bind(view)
+        val binding = FragmentAddRestaurantBinding.bind(view)
 
         val name = binding.editLocalName.text.toString()
         val address = binding.editLocalAddress.text.toString()
@@ -82,7 +82,7 @@ class LocalDialogFragmentCU : DialogFragment() {
 
     // todo CARGAR VALORACION DEL LOCAL A EDITAR EN EL DIALOGO
     private fun setValuesIntoDialog(viewDialogEditLocal: View, arguments: Bundle?) {
-        val binding = FragmentAddLocalBinding.bind(viewDialogEditLocal)
+        val binding = FragmentAddRestaurantBinding.bind(viewDialogEditLocal)
         arguments?.let {
             binding.editLocalName.setText(it.getString(ArgumentsLocal.ARGUMENT_NAME))
             binding.editLocalPhone.setText(it.getString(ArgumentsLocal.ARGUMENT_PHONE))

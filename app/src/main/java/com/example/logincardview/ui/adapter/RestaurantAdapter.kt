@@ -7,24 +7,24 @@ import com.example.logincardview.R
 import com.example.logincardview.models.Local
 
 
-class LocalAdapter (
+class RestaurantAdapter (
     var listLocal : MutableList<Local>,
     var deleteOnClick : (Int) ->  Unit,
     var updateOnClick : (Int) -> Unit
-) : RecyclerView.Adapter<LocalView> (){
+) : RecyclerView.Adapter<RestaurantView> (){
 
   //Este método me creará un objeto de tipo ViewHolderLocal, por cada objeto de la listLocal
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LocalView {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantView {
         val layoutInflater = LayoutInflater.from(parent. context)
-        val layoutItemLocal = R.layout.activity_local
-        return LocalView(
+        val layoutItemLocal = R.layout.activity_restaurant
+        return RestaurantView(
             layoutInflater.inflate(layoutItemLocal, parent, false),
             deleteOnClick,
             updateOnClick)
     }
 
     //Inmediatamente de crear el objeto ViewHodlerLocal, deberá renderizar la vista
-    override fun onBindViewHolder(holder: LocalView, position: Int) {
+    override fun onBindViewHolder(holder: RestaurantView, position: Int) {
         holder.renderize(listLocal[position])
     }
 
