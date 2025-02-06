@@ -1,6 +1,7 @@
 package com.example.logincardview.data.repository
 
-import com.example.logincardview.data.service.RestaurantService
+import RestaurantService
+import com.example.logincardview.data.models.RestaurantDTO
 import com.example.logincardview.domain.models.Restaurant
 import com.example.logincardview.domain.repository.RepositoryInterface
 
@@ -26,6 +27,18 @@ class RestaurantInMemoryRepository(
             )
         }
     }
+
+    override suspend fun add(restaurant: Restaurant) {
+        val newRestaurantDTO = RestaurantDTO(
+            restaurant.name,
+            restaurant.address,
+            restaurant.phone,
+            restaurant.rating,
+            restaurant.description
+        )
+        restaurantService.addRestaurant(newRestaurantDTO)
+    }
+
 
     override suspend fun edit(): Restaurant {
         TODO("Not yet implemented")

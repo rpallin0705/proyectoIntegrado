@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import com.example.logincardview.R
 import com.example.logincardview.databinding.FragmentAddRestaurantBinding
 import com.example.logincardview.domain.models.Restaurant
+import com.example.logincardview.ui.modelview.RestaurantViewModel
 
 class RestaurantDialogFragmentCU : DialogFragment() {
 
