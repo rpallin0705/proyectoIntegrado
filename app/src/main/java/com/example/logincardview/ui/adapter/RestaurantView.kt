@@ -5,12 +5,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.logincardview.R
 import com.example.logincardview.databinding.ActivityRestaurantBinding
-import com.example.logincardview.models.Local
+import com.example.logincardview.domain.models.Restaurant
 
 class RestaurantView(
     view: View,
-    var deleteOnClick: (Int) -> Unit,
-    var updateOnClick: (Int) -> Unit
+    /*var deleteOnClick: (Int) -> Unit,
+    var updateOnClick: (Int) -> Unit*/
 ) : RecyclerView.ViewHolder(view) {
 
     private val binding = ActivityRestaurantBinding.bind(view)
@@ -24,11 +24,11 @@ class RestaurantView(
         binding.imageView7
     )
 
-    // Método para renderizar el Local
-    fun renderize(local: Local) {
-        binding.localName.text = local.nombre
-        binding.localAddress.text = local.direccion
-        binding.localPhone.text = local.contacto
+    // Método para renderizar el Restaurant
+    fun renderize(restaurant : Restaurant) {
+        binding.localName.text = restaurant.name
+        binding.localAddress.text = restaurant.address
+        binding.localPhone.text = restaurant.phone
 
         Glide.with(itemView.context)
             .load(R.drawable.cardview_img1)
@@ -36,7 +36,7 @@ class RestaurantView(
             .into(binding.localImage)
 
         // Actualiza las estrellas según el rate
-        updateStars(local.valoracion)
+        updateStars(restaurant.rating)
 
         // Asignar los listeners
         setOnClickListener(adapterPosition)
@@ -44,13 +44,13 @@ class RestaurantView(
 
     // Método para asignar el click al botón de eliminar
     private fun setOnClickListener(position: Int) {
-        binding.deleteBtn.setOnClickListener {
+        /*binding.deleteBtn.setOnClickListener {
             deleteOnClick(position)
         }
 
         binding.editBtn.setOnClickListener {
             updateOnClick(position)
-        }
+        }*/
     }
 
     // Método para actualizar las estrellas según la valoración

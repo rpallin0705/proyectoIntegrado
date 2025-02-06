@@ -26,4 +26,12 @@ class RestaurantInMemoryRepository(
             )
         }
     }
+
+    override suspend fun edit(): Restaurant {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun delete(): Boolean {
+        TODO("Not yet implemented")
+    }
 }

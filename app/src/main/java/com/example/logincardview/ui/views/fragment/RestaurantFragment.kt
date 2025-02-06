@@ -5,16 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.logincardview.R
-import com.example.logincardview.controller.LocalController
 import com.example.logincardview.databinding.FragmentRestaurantBinding
-import com.example.logincardview.ui.views.activity.MainActivity
+import com.example.logincardview.ui.adapter.RestaurantAdapter
+import com.example.logincardview.ui.modelview.RestaurantViewModel
 
 class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
     private lateinit var bindingFragment: FragmentRestaurantBinding
-    private lateinit var localController: LocalController
+    lateinit var adapter: RestaurantAdapter
+    val restaurantViewModel: RestaurantViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,23 +27,35 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
         bindingFragment = FragmentRestaurantBinding.inflate(inflater, container, false)
 
         initRecyclerView()
-
-        localController = LocalController(requireActivity() as MainActivity, this)
+        observeViewModel()  // Observando los cambios en el ViewModel
 
         return bindingFragment.root
     }
 
-    private fun initRecyclerView() {
-        bindingFragment.recyclerViewLocal.layoutManager = LinearLayoutManager(requireContext())
+    private fun loadData() {
+        restaurantViewModel.getRestaurants() // Llamada para obtener los datos
     }
 
-    fun getLocalFragmentBinding(): FragmentRestaurantBinding {
-        return this.bindingFragment
+    private fun initRecyclerView() {
+        // Inicializar el RecyclerView con el LinearLayoutManager
+        bindingFragment.recyclerViewLocal.layoutManager = LinearLayoutManager(requireContext())
+
+        // Inicializar el adapter
+        adapter = RestaurantAdapter()
+
+        // Asignar el adapter al RecyclerView
+        bindingFragment.recyclerViewLocal.adapter = adapter
+    }
+
+    private fun observeViewModel() {
+        // Observamos los datos de los restaurantes en el LiveData
+        restaurantViewModel.restaurantLiveData.observe(viewLifecycleOwner) { restaurants ->
+            // Actualizamos la lista en el adapter cuando los datos cambian
+            adapter.restaurantList = restaurants
+            adapter.notifyDataSetChanged()  // Notificar al adapter que los datos han cambiado
+        }
+
+        // Cargar los datos desde el ViewModel
+        loadData()
     }
 }
-
-
-
-
-
-
