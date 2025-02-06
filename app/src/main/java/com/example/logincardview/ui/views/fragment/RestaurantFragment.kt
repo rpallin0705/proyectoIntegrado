@@ -11,6 +11,7 @@ import com.example.logincardview.R
 import com.example.logincardview.databinding.FragmentRestaurantBinding
 import com.example.logincardview.ui.adapter.RestaurantAdapter
 import com.example.logincardview.ui.modelview.RestaurantViewModel
+import com.example.logincardview.ui.views.fragment.RestaurantDialogFragmentCU
 
 class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
@@ -28,6 +29,20 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
         initRecyclerView()
         observeViewModel()  // Observando los cambios en el ViewModel
+
+        // Configurar el botón para abrir el DialogFragment
+        bindingFragment.addButton.setOnClickListener {
+            // Crear el DialogFragment para añadir un restaurante
+            val dialog = RestaurantDialogFragmentCU()
+
+            // Configurar el callback onUpdate para añadir el restaurante
+            dialog.onUpdate = { restaurant ->
+                restaurantViewModel.addRestaurant(restaurant)
+            }
+
+            // Mostrar el DialogFragment
+            dialog.show(parentFragmentManager, "AddRestaurantDialog")
+        }
 
         return bindingFragment.root
     }

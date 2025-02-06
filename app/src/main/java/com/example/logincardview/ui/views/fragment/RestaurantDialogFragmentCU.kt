@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.logincardview.R
 import com.example.logincardview.databinding.FragmentAddRestaurantBinding
 import com.example.logincardview.domain.models.Restaurant
 import com.example.logincardview.ui.modelview.RestaurantViewModel
 
 class RestaurantDialogFragmentCU : DialogFragment() {
+
+    private lateinit var restaurantViewModel: RestaurantViewModel
 
     // Callback para devolver el restaurant editado
     var onUpdate: ((Restaurant) -> Unit)? = null
@@ -28,6 +31,9 @@ class RestaurantDialogFragmentCU : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         val viewDialogAddRestaurant = inflater.inflate(R.layout.fragment_add_restaurant, container, false)
+
+        // Obtener el ViewModel
+        restaurantViewModel = ViewModelProvider(requireActivity())[RestaurantViewModel::class.java]
 
         val btnConfirm = viewDialogAddRestaurant.findViewById<ImageButton>(R.id.positive_button)
         val btnCancel = viewDialogAddRestaurant.findViewById<ImageButton>(R.id.negative_button)

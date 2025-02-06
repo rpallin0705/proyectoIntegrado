@@ -36,9 +36,16 @@ class RestaurantViewModel() : ViewModel() {
 
     fun addRestaurant(restaurant: Restaurant) {
         viewModelScope.launch {
-            addRestaurantUseCase(restaurant)
-        }
+            try {
+                addRestaurantUseCase(restaurant)
 
+                val updatedRestaurants = getRestaurantsUseCase()
+                restaurantLiveData.postValue(updatedRestaurants)
+            } catch (e: Exception) {
+                errorLiveData.value = e.message ?: "Error desconocido"
+            }
+        }
     }
+
 
 }
