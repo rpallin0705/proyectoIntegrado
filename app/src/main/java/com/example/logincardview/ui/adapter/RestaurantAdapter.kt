@@ -9,7 +9,8 @@ import com.example.logincardview.domain.models.Restaurant
 
 class RestaurantAdapter(
     var restaurantList: List<Restaurant> = emptyList(),
-    private val onDeleteClick: (Int) -> Unit
+    private val onDeleteClick: (Int) -> Unit,
+    private val onEditClick: (Restaurant) -> Unit
 ) : RecyclerView.Adapter<RestaurantView>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantView {
@@ -24,6 +25,10 @@ class RestaurantAdapter(
         val restaurant = restaurantList[position]
         holder.itemView.findViewById<ImageButton>(R.id.delete_btn).setOnClickListener {
             onDeleteClick(position)
+        }
+
+        holder.itemView.findViewById<ImageButton>(R.id.edit_btn).setOnClickListener {
+            onEditClick(restaurant)
         }
         holder.renderize(restaurant)
     }

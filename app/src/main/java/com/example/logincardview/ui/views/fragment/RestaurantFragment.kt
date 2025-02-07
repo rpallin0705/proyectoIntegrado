@@ -51,7 +51,7 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
     private fun initRecyclerView() {
         bindingFragment.recyclerViewLocal.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = RestaurantAdapter(emptyList()) { position ->
+        adapter = RestaurantAdapter(emptyList(), { position ->
             val restaurantName = adapter.restaurantList[position].name
 
             restaurantViewModel.deleteRestaurant(position)
@@ -61,7 +61,15 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
                 "Restaurante eliminado: $restaurantName",
                 Toast.LENGTH_SHORT
             ).show()
-        }
+        },
+        { restaurant ->
+            val dialog = RestaurantDialogFragmentCU().newInstance(restaurant)
+            dialog.onUpdate = { updatedRestaurant ->
+                restaurantViewModel.editRestaurant(restaurant, updatedRestaurant)
+            }
+            dialog.show(parentFragmentManager, "EditRestaurantDialogFragment")
+
+        })
 
         bindingFragment.recyclerViewLocal.adapter = adapter
     }

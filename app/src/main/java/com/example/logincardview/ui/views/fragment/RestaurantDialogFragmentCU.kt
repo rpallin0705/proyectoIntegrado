@@ -16,21 +16,24 @@ import com.example.logincardview.ui.modelview.RestaurantViewModel
 class RestaurantDialogFragmentCU : DialogFragment() {
 
     private lateinit var restaurantViewModel: RestaurantViewModel
-
-    // Callback para devolver el restaurant editado
     var onUpdate: ((Restaurant) -> Unit)? = null
-
-    // Variable para guardar la valoración seleccionada
     private var selectedRating = 0
 
     private lateinit var stars: List<ImageButton>
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setValuesIntoDialog(view, arguments)
+        updateStars(selectedRating)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val viewDialogAddRestaurant = inflater.inflate(R.layout.fragment_add_restaurant, container, false)
+        val viewDialogAddRestaurant =
+            inflater.inflate(R.layout.fragment_add_restaurant, container, false)
 
         // Obtener el ViewModel
         restaurantViewModel = ViewModelProvider(requireActivity())[RestaurantViewModel::class.java]
@@ -50,7 +53,6 @@ class RestaurantDialogFragmentCU : DialogFragment() {
 
         stars = listOf(star1, star2, star3, star4, star5)
 
-        // Asigna un OnClickListener a cada estrella
         for (i in stars.indices) {
             stars[i].setOnClickListener {
                 updateStars(i + 1)
@@ -63,16 +65,29 @@ class RestaurantDialogFragmentCU : DialogFragment() {
             if (updatedRestaurant.name.isEmpty() || updatedRestaurant.address.isEmpty() || updatedRestaurant.phone.isEmpty() || updatedRestaurant.description.isEmpty()) {
                 Toast.makeText(activity, "Algún campo está vacío", Toast.LENGTH_LONG).show()
             } else {
-                onUpdate?.invoke(updatedRestaurant)  // Llamar a la función de callback
-                dismiss()  // Cerrar el diálogo
+                onUpdate?.invoke(updatedRestaurant)
+                dismiss()
             }
         }
 
         btnCancel.setOnClickListener {
-            dismiss()  // Cerrar el diálogo
+            dismiss()
         }
 
         return viewDialogAddRestaurant
+    }
+
+    fun newInstance(restaurant: Restaurant): RestaurantDialogFragmentCU {
+        val fragment = RestaurantDialogFragmentCU()
+        val args = Bundle().apply {
+            putString("name", restaurant.name)
+            putString("phone", restaurant.phone)
+            putString("address", restaurant.address)
+            putString("description", restaurant.description)
+            putInt("rating", restaurant.rating) // Agregar el rating
+        }
+        fragment.arguments = args
+        return fragment
     }
 
     private fun recoverDataLayout(view: View): Restaurant {
@@ -93,13 +108,12 @@ class RestaurantDialogFragmentCU : DialogFragment() {
             binding.editLocalPhone.setText(it.getString("phone"))
             binding.editLocalAddress.setText(it.getString("address"))
             binding.editLocalDescription.setText(it.getString("description"))
+            selectedRating = it.getInt("rating", 0)
         }
     }
 
-    // Función para actualizar las estrellas y guardar la valoración
     private fun updateStars(rating: Int) {
         selectedRating = rating
-
         for (i in stars.indices) {
             if (i < rating) {
                 stars[i].setImageResource(R.drawable.baseline_star_24) // Estrella rellena

@@ -1,5 +1,8 @@
+package com.example.logincardview.data.service
+
 import com.example.logincardview.data.datasource.RestaurantDataSource
 import com.example.logincardview.data.models.RestaurantDTO
+import com.example.logincardview.domain.models.Restaurant
 
 class RestaurantService {
     private val dataSource = RestaurantDataSource()
@@ -14,5 +17,9 @@ class RestaurantService {
 
     suspend fun deleteRestaurant(restaurantId: Int) {
         dataSource.deleteRestaurant(restaurantId)
+    }
+
+    suspend fun editRestaurant(oldRestaurant: RestaurantDTO, newRestaurant: RestaurantDTO){
+        dataSource.editRestaurant(oldRestaurant, newRestaurant)
     }
 }

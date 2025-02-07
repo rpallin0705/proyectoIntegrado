@@ -1,7 +1,7 @@
 package com.example.logincardview.data.repository
 
-import RestaurantService
 import com.example.logincardview.data.models.RestaurantDTO
+import com.example.logincardview.data.service.RestaurantService
 import com.example.logincardview.domain.models.Restaurant
 import com.example.logincardview.domain.repository.RepositoryInterface
 
@@ -39,5 +39,20 @@ class RestaurantInMemoryRepository(
     override suspend fun delete(id: Int): Boolean {
         restaurantService.deleteRestaurant(id)
         return true;
+    }
+
+
+
+    override suspend fun edit(oldRestaurant: Restaurant, newRestaurant: Restaurant) {
+        val oldRestaurantDTO = RestaurantDTO(
+            oldRestaurant.name, oldRestaurant.address, oldRestaurant.phone,
+            oldRestaurant.rating, oldRestaurant.description
+        )
+
+        val newRestaurantDTO = RestaurantDTO(
+            newRestaurant.name, newRestaurant.address, newRestaurant.phone,
+            newRestaurant.rating, newRestaurant.description
+        )
+        restaurantService.editRestaurant(oldRestaurantDTO, newRestaurantDTO)
     }
 }

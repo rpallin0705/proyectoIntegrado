@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.logincardview.data.repository.RestaurantInMemoryRepository
 import com.example.logincardview.domain.models.Restaurant
 import com.example.logincardview.domain.usecase.DeleteRestaurantUseCase
+import com.example.logincardview.domain.usecase.EditRestaurantUseCase
 import com.example.logincardview.domain.usecase.GetRestaurantsUseCase
 import com.example.logincardview.domain.usecases.AddRestaurantUseCase
 import com.example.logincardview.ui.views.fragment.RestaurantFragment
@@ -21,6 +22,7 @@ class RestaurantViewModel() : ViewModel() {
     private val getRestaurantsUseCase: GetRestaurantsUseCase = GetRestaurantsUseCase(repository)
     private val addRestaurantUseCase: AddRestaurantUseCase = AddRestaurantUseCase(repository)
     private val deleteRestaurantUseCase: DeleteRestaurantUseCase = DeleteRestaurantUseCase(repository)
+    private val editRestaurantUseCase: EditRestaurantUseCase = EditRestaurantUseCase(repository)
 
     fun getRestaurants() {
         progressBarLiveData.value = true
@@ -55,6 +57,18 @@ class RestaurantViewModel() : ViewModel() {
         viewModelScope.launch {
             try {
                 deleteRestaurantUseCase(position)
+                val updatedRestaurants = getRestaurantsUseCase()
+                restaurantLiveData.postValue(updatedRestaurants)
+            } catch (e: Exception) {
+                errorLiveData.value = e.message ?: "Error desconocido"
+            }
+        }
+    }
+
+    fun editRestaurant(oldRestaurant: Restaurant, newRestaurant: Restaurant) {
+        viewModelScope.launch {
+            try {
+                editRestaurantUseCase(oldRestaurant, newRestaurant)
                 val updatedRestaurants = getRestaurantsUseCase()
                 restaurantLiveData.postValue(updatedRestaurants)
             } catch (e: Exception) {

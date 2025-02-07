@@ -1,6 +1,7 @@
 package com.example.logincardview.data.datasource
 
 import com.example.logincardview.data.models.RestaurantDTO
+import com.example.logincardview.domain.models.Restaurant
 
 class RestaurantDataSource {
 
@@ -88,5 +89,11 @@ class RestaurantDataSource {
 
     fun deleteRestaurant(restaurantId: Int) {
         restaurantList.removeAt(restaurantId)
+    }
+
+    fun editRestaurant(oldRestaurant: RestaurantDTO, newRestaurant: RestaurantDTO){
+        val index = restaurantList.indexOfFirst { it.name == newRestaurant.name }
+        if (index != -1)
+            restaurantList[index] = newRestaurant
     }
 }
