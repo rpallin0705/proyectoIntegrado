@@ -96,7 +96,7 @@ Este archivo define un objeto Singleton simplificado que también maneja el acce
 
 ## Fragments
 
-### `LocalFragment.kt`
+### `RestaurantFragment.kt`
 
 Este archivo define un fragmento que muestra la lista de restaurantes en un `RecyclerView`. El fragmento obtiene los datos de los restaurantes desde el repositorio y los presenta utilizando un adaptador personalizado.
 
@@ -153,9 +153,9 @@ Este archivo define un repositorio (`LocalRepository`) que contiene una lista es
 
 - **`locales`** (`List<Local>`): Lista de objetos `Local` con los datos de los restaurantes (nombre, dirección, contacto y valoración).
 
-## MainActivity.kt
+## MainActivityantiguo.kt
 
-El archivo `MainActivity.kt` es la actividad principal que muestra el fragmento con la lista de restaurantes. Se encarga de gestionar la pantalla inicial de la app y su navegación.
+El archivo `MainActivityantiguo.kt` es la actividad principal que muestra el fragmento con la lista de restaurantes. Se encarga de gestionar la pantalla inicial de la app y su navegación.
 
 ## Conclusión
 

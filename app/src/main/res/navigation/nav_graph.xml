@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/localFragment">
+
+    <fragment
+        android:id="@+id/localFragment"
+        android:name="com.example.logincardview.ui.views.fragment.RestaurantFragment"
+        android:label="Restaurantes Kizuna"
+        tools:layout="@layout/fragment_restaurant" >
+        <action
+            android:id="@+id/action_localFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.logincardview.ui.views.fragment.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
