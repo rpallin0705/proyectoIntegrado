@@ -7,11 +7,7 @@ import com.example.logincardview.R
 import com.example.logincardview.databinding.ActivityRestaurantBinding
 import com.example.logincardview.domain.models.Restaurant
 
-class RestaurantView(
-    view: View,
-    /*var deleteOnClick: (Int) -> Unit,
-    var updateOnClick: (Int) -> Unit*/
-) : RecyclerView.ViewHolder(view) {
+class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ActivityRestaurantBinding.bind(view)
 
@@ -25,7 +21,7 @@ class RestaurantView(
     )
 
     // Método para renderizar el Restaurant
-    fun renderize(restaurant : Restaurant) {
+    fun renderize(restaurant: Restaurant) {
         binding.localName.text = restaurant.name
         binding.localAddress.text = restaurant.address
         binding.localPhone.text = restaurant.phone
@@ -37,20 +33,6 @@ class RestaurantView(
 
         // Actualiza las estrellas según el rate
         updateStars(restaurant.rating)
-
-        // Asignar los listeners
-        setOnClickListener(adapterPosition)
-    }
-
-    // Método para asignar el click al botón de eliminar
-    private fun setOnClickListener(position: Int) {
-        /*binding.deleteBtn.setOnClickListener {
-            deleteOnClick(position)
-        }
-
-        binding.editBtn.setOnClickListener {
-            updateOnClick(position)
-        }*/
     }
 
     // Método para actualizar las estrellas según la valoración

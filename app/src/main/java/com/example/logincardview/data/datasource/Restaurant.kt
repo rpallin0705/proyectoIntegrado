@@ -86,5 +86,7 @@ class RestaurantDataSource {
         restaurantList.add(restaurant)
     }
 
-    // TODO edit y delete
+    fun deleteRestaurant(restaurantId: Int) {
+        restaurantList.removeAt(restaurantId)
+    }
 }

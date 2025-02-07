@@ -1,22 +1,26 @@
 package com.example.logincardview.ui.modelview
 
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.logincardview.data.repository.RestaurantInMemoryRepository
 import com.example.logincardview.domain.models.Restaurant
+import com.example.logincardview.domain.usecase.DeleteRestaurantUseCase
 import com.example.logincardview.domain.usecase.GetRestaurantsUseCase
 import com.example.logincardview.domain.usecases.AddRestaurantUseCase
+import com.example.logincardview.ui.views.fragment.RestaurantFragment
 import kotlinx.coroutines.launch
 
 class RestaurantViewModel() : ViewModel() {
 
     val restaurantLiveData = MutableLiveData<List<Restaurant>>()
-    val progressBarLiveData = MutableLiveData<Boolean>()
-    val errorLiveData = MutableLiveData<String>()
-    val repository: RestaurantInMemoryRepository = RestaurantInMemoryRepository()
-    val getRestaurantsUseCase: GetRestaurantsUseCase = GetRestaurantsUseCase(repository)
+    private val progressBarLiveData = MutableLiveData<Boolean>()
+    private val errorLiveData = MutableLiveData<String>()
+    private val repository: RestaurantInMemoryRepository = RestaurantInMemoryRepository()
+    private val getRestaurantsUseCase: GetRestaurantsUseCase = GetRestaurantsUseCase(repository)
     private val addRestaurantUseCase: AddRestaurantUseCase = AddRestaurantUseCase(repository)
+    private val deleteRestaurantUseCase: DeleteRestaurantUseCase = DeleteRestaurantUseCase(repository)
 
     fun getRestaurants() {
         progressBarLiveData.value = true
@@ -47,5 +51,15 @@ class RestaurantViewModel() : ViewModel() {
         }
     }
 
-
+    fun deleteRestaurant(position: Int) {
+        viewModelScope.launch {
+            try {
+                deleteRestaurantUseCase(position)
+                val updatedRestaurants = getRestaurantsUseCase()
+                restaurantLiveData.postValue(updatedRestaurants)
+            } catch (e: Exception) {
+                errorLiveData.value = e.message ?: "Error desconocido"
+            }
+        }
+    }
 }

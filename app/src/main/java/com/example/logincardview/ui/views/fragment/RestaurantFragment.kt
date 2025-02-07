@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +12,7 @@ import com.example.logincardview.R
 import com.example.logincardview.databinding.FragmentRestaurantBinding
 import com.example.logincardview.ui.adapter.RestaurantAdapter
 import com.example.logincardview.ui.modelview.RestaurantViewModel
-import com.example.logincardview.ui.views.fragment.RestaurantDialogFragmentCU
+
 
 class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
@@ -28,49 +29,57 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
         bindingFragment = FragmentRestaurantBinding.inflate(inflater, container, false)
 
         initRecyclerView()
-        observeViewModel()  // Observando los cambios en el ViewModel
+        observeViewModel()
 
-        // Configurar el botón para abrir el DialogFragment
         bindingFragment.addButton.setOnClickListener {
-            // Crear el DialogFragment para añadir un restaurante
             val dialog = RestaurantDialogFragmentCU()
 
-            // Configurar el callback onUpdate para añadir el restaurante
             dialog.onUpdate = { restaurant ->
                 restaurantViewModel.addRestaurant(restaurant)
             }
 
-            // Mostrar el DialogFragment
-            dialog.show(parentFragmentManager, "AddRestaurantDialog")
+            dialog.show(parentFragmentManager, "AddRestaurantDialoFg")
         }
 
         return bindingFragment.root
     }
 
     private fun loadData() {
-        restaurantViewModel.getRestaurants() // Llamada para obtener los datos
+        restaurantViewModel.getRestaurants()
     }
 
     private fun initRecyclerView() {
-        // Inicializar el RecyclerView con el LinearLayoutManager
         bindingFragment.recyclerViewLocal.layoutManager = LinearLayoutManager(requireContext())
 
-        // Inicializar el adapter
-        adapter = RestaurantAdapter()
+        adapter = RestaurantAdapter(emptyList()) { position ->
+            val restaurantName = adapter.restaurantList[position].name
 
-        // Asignar el adapter al RecyclerView
+            restaurantViewModel.deleteRestaurant(position)
+
+            Toast.makeText(
+                requireContext(),
+                "Restaurante eliminado: $restaurantName",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
         bindingFragment.recyclerViewLocal.adapter = adapter
     }
 
+
     private fun observeViewModel() {
-        // Observamos los datos de los restaurantes en el LiveData
         restaurantViewModel.restaurantLiveData.observe(viewLifecycleOwner) { restaurants ->
-            // Actualizamos la lista en el adapter cuando los datos cambian
+            val previousSize = adapter.restaurantList.size
+
             adapter.restaurantList = restaurants
-            adapter.notifyDataSetChanged()  // Notificar al adapter que los datos han cambiado
+            adapter.notifyDataSetChanged()
+
+            if (restaurants.size > previousSize) {
+                bindingFragment.recyclerViewLocal.smoothScrollToPosition(restaurants.size - 1)
+            }
         }
 
-        // Cargar los datos desde el ViewModel
         loadData()
     }
+
 }

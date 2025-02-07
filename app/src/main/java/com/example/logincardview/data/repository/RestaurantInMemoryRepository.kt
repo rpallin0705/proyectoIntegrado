@@ -12,9 +12,6 @@ class RestaurantInMemoryRepository(
     private val restaurantService: RestaurantService = RestaurantService()
 ) : RepositoryInterface<Restaurant> {
 
-    /**
-     * Convierte los datos nativos a los datos del dominio de la aplicación
-     */
     override suspend fun getAll(): List<Restaurant> {
         val restaurants = restaurantService.getRestaurants()
         return restaurants.map { restaurantDTO ->
@@ -28,23 +25,19 @@ class RestaurantInMemoryRepository(
         }
     }
 
-    override suspend fun add(restaurant: Restaurant) {
+    override suspend fun add(o: Restaurant) {
         val newRestaurantDTO = RestaurantDTO(
-            restaurant.name,
-            restaurant.address,
-            restaurant.phone,
-            restaurant.rating,
-            restaurant.description
+            o.name,
+            o.address,
+            o.phone,
+            o.rating,
+            o.description
         )
         restaurantService.addRestaurant(newRestaurantDTO)
     }
 
-
-    override suspend fun edit(): Restaurant {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun delete(): Boolean {
-        TODO("Not yet implemented")
+    override suspend fun delete(id: Int): Boolean {
+        restaurantService.deleteRestaurant(id)
+        return true;
     }
 }
