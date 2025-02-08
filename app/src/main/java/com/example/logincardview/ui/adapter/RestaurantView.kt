@@ -1,11 +1,15 @@
 package com.example.logincardview.ui.adapter
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.logincardview.R
 import com.example.logincardview.databinding.ActivityRestaurantBinding
 import com.example.logincardview.domain.models.Restaurant
+import com.example.logincardview.ui.views.fragment.RestaurantDialogFragmentCU
 
 class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
 
@@ -30,6 +34,27 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
             .into(binding.localImage)
 
         updateStars(restaurant.rating)
+
+        // Agregar OnClickListener para el teléfono
+        binding.localPhone.setOnClickListener {
+            val phoneNumber = restaurant.phone
+            val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber"))
+            itemView.context.startActivity(intent)
+        }
+
+        // Agregar OnClickListener para la dirección (Google Maps)
+        binding.localAddress.setOnClickListener {
+            val address = restaurant.address
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=$address"))
+            itemView.context.startActivity(intent)
+        }
+
+        // Agregar OnClickListener para la imagen
+        binding.localImage.setOnClickListener {
+            val dialog = RestaurantDialogFragmentCU().newInstance(restaurant, false)
+            // Mostrar el diálogo
+            dialog.show((itemView.context as AppCompatActivity).supportFragmentManager, "RestaurantDialogFragmentCU")
+        }
     }
 
     private fun updateStars(rate: Int) {
@@ -42,3 +67,5 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 }
+
+

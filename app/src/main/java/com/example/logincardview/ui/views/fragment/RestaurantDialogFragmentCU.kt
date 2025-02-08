@@ -17,13 +17,19 @@ class RestaurantDialogFragmentCU : DialogFragment() {
     private lateinit var restaurantViewModel: RestaurantViewModel
     var onUpdate: ((Restaurant) -> Unit)? = null
     private var selectedRating = 0
+    private var isEditable : Boolean = true
 
     private lateinit var binding: FragmentAddRestaurantBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentAddRestaurantBinding.bind(view)
+
         setValuesIntoDialog(arguments)
+
+        if (!isEditable)
+            disableEditing()
+
         updateStars(selectedRating)
         setupListeners()
     }
@@ -48,7 +54,36 @@ class RestaurantDialogFragmentCU : DialogFragment() {
             putInt("rating", restaurant.rating)
         }
         fragment.arguments = args
+        fragment.isEditable = true
         return fragment
+    }
+
+    fun newInstance(restaurant: Restaurant, isEdit: Boolean): RestaurantDialogFragmentCU {
+        val fragment = RestaurantDialogFragmentCU()
+        val args = Bundle().apply {
+            putString("name", restaurant.name)
+            putString("phone", restaurant.phone)
+            putString("address", restaurant.address)
+            putString("description", restaurant.description)
+            putInt("rating", restaurant.rating)
+        }
+
+        fragment.arguments = args
+        fragment.isEditable = isEdit
+        return fragment
+    }
+
+    private fun disableEditing() {
+        binding.editLocalName.isEnabled = false
+        binding.editLocalPhone.isEnabled = false
+        binding.editLocalAddress.isEnabled = false
+        binding.editLocalDescription.isEnabled = false
+        binding.star1.isEnabled = false
+        binding.star2.isEnabled = false
+        binding.star3.isEnabled = false
+        binding.star4.isEnabled = false
+        binding.star5.isEnabled = false
+        binding.positiveButton.visibility = View.GONE
     }
 
     private fun setValuesIntoDialog(arguments: Bundle?) {
