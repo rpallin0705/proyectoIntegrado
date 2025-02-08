@@ -17,6 +17,8 @@
         android:id="@+id/my_nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        app:itemTextColor="@color/nav_item_text_color"
+        app:itemIconTint="@color/nav_item_icon_color"
         android:layout_gravity="start"
         app:menu="@menu/nav_menu"
         app:headerLayout="@layout/nav_header" />
