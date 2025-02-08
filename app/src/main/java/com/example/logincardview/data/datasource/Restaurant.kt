@@ -2,6 +2,7 @@ package com.example.logincardview.data.datasource
 
 import com.example.logincardview.data.models.RestaurantDTO
 import com.example.logincardview.domain.models.Restaurant
+import kotlinx.coroutines.delay
 
 class RestaurantDataSource {
 

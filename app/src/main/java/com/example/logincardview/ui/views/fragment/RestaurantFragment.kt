@@ -1,5 +1,7 @@
 package com.example.logincardview.ui.views.fragment
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +22,14 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
     private lateinit var adapter: RestaurantAdapter
     private val restaurantViewModel: RestaurantViewModel by viewModels()
     private var isFirstLoad = true
+    private lateinit var sharedPreferences: SharedPreferences
 
+    private val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == "is_admin") {
+            val isAdmin = sharedPreferences.getBoolean("is_admin", false)
+            adapter.setAdminState(isAdmin)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,17 +37,24 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRestaurantBinding.inflate(inflater, container, false)
+        sharedPreferences = requireActivity().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+        sharedPreferences.registerOnSharedPreferenceChangeListener(prefListener)
 
         setupRecyclerView()
         observeViewModel()
         setupAddButton()
 
+        adapter.setAdminState(sharedPreferences.getBoolean("is_admin", false))
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(prefListener)
     }
 
     private fun setupRecyclerView() {
         binding.recyclerViewLocal.layoutManager = LinearLayoutManager(requireContext())
-
         adapter = RestaurantAdapter(emptyList(), ::onDeleteRestaurant, ::onEditRestaurant)
         binding.recyclerViewLocal.adapter = adapter
     }
@@ -52,11 +68,7 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
     private fun onDeleteRestaurant(position: Int) {
         val restaurantName = adapter.restaurantList[position].name
         restaurantViewModel.deleteRestaurant(position)
-        Toast.makeText(
-            requireContext(),
-            "Restaurante eliminado: $restaurantName",
-            Toast.LENGTH_SHORT
-        ).show()
+        Toast.makeText(requireContext(), "Restaurante eliminado: $restaurantName", Toast.LENGTH_SHORT).show()
     }
 
     private fun onEditRestaurant(restaurant: Restaurant) {
@@ -84,7 +96,6 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
         loadData()
     }
 
-
     private fun loadData() {
         restaurantViewModel.getRestaurants()
     }
@@ -95,15 +106,14 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
             adapter.restaurantList = restaurants
             adapter.notifyDataSetChanged()
 
-            if (!isFirstLoad && restaurants.size > previousSize) {
+            adapter.setAdminState(sharedPreferences.getBoolean("is_admin", false))
+
+            if (isFirstLoad && restaurants.size > previousSize) {
                 binding.recyclerViewLocal.post {
                     binding.recyclerViewLocal.smoothScrollToPosition(restaurants.size - 1)
                 }
             }
-
             isFirstLoad = false
         }
     }
-
-
 }

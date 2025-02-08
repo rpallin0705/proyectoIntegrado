@@ -1,6 +1,5 @@
 package com.example.logincardview.ui.views.fragment
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -25,33 +24,32 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPreferences = requireActivity().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
-
+        // Inicializa las vistas
         nameTextView = view.findViewById(R.id.settingg_name)
         emailTextView = view.findViewById(R.id.settings_email)
         switchAdmin = view.findViewById(R.id.setting_admin_btn)
         logoutButton = view.findViewById(R.id.setting_logout_btn)
 
+        sharedPreferences = requireActivity().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
 
-        if (!sharedPreferences.contains("isAdmin")) {
-            sharedPreferences.edit().putBoolean("isAdmin", false).apply()
+
+        val isAdmin = sharedPreferences.getBoolean("is_admin", false)
+        switchAdmin.isChecked = isAdmin
+
+
+        switchAdmin.setOnCheckedChangeListener { _, isChecked ->
+            sharedPreferences.edit().putBoolean("is_admin", isChecked).apply()
+            Toast.makeText(requireContext(), "Modo administrador ${if (isChecked) "activado" else "desactivado"}", Toast.LENGTH_SHORT).show()
         }
 
         loadUserData()
 
-        switchAdmin.setOnCheckedChangeListener { _, isChecked ->
-            sharedPreferences.edit().putBoolean("isAdmin", isChecked).apply()
-            Toast.makeText(requireContext(), "Admin: ${if (isChecked) "Activado" else "Desactivado"}", Toast.LENGTH_SHORT).show()
-        }
 
         logoutButton.setOnClickListener {
-            // Limpiar SharedPreferences
             sharedPreferences.edit().clear().apply()
 
-            // Cerrar sesión en Firebase
             FirebaseAuth.getInstance().signOut()
 
-            // Redirigir a LoginActivity y limpiar el backstack
             val intent = Intent(requireActivity(), LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
@@ -60,10 +58,9 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
     private fun loadUserData() {
         val email = sharedPreferences.getString("saved_email", "Correo no disponible")
-        val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
 
         nameTextView.text = email?.substringBefore('@')
         emailTextView.text = email
-        switchAdmin.isChecked = isAdmin
     }
 }
+

@@ -1,6 +1,7 @@
 package com.example.logincardview.ui.views.activity
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.TextView
@@ -10,8 +11,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.logincardview.LoginActivity
 import com.example.logincardview.R
 import com.example.logincardview.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,7 +58,34 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        binding.myNavView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_logout -> {
+
+                    val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+                    sharedPreferences.edit().clear().apply()
+
+                    FirebaseAuth.getInstance().signOut()
+
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    true  // Consume el clic
+                }
+                else -> {
+                    // Si el clic no es en logout, se comporta normalmente:
+                    // Navega al destino seleccionado y cierra el Drawer.
+                    val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
+                    binding.myDrawer.closeDrawers()
+                    handled
+                }
+            }
+        }
+
+
     }
+
+
 
     override fun onSupportNavigateUp(): Boolean {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp()
