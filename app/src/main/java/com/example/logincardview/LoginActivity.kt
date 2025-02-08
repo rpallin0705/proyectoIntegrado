@@ -1,4 +1,3 @@
-
 package com.example.logincardview
 
 import android.content.Intent
@@ -10,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.logincardview.databinding.LoginActivityBinding
+import com.example.logincardview.ui.views.activity.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -38,34 +38,32 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        /*init()
+        init()
         checkUserSession()
-        start()*/
+        start()
     }
-}
 
-    /*private fun init() {
+
+    private fun init() {
         this.auth = FirebaseAuth.getInstance()
         sharedPreferences = getSharedPreferences("login_prefs", MODE_PRIVATE)
-        loadEmail() // Cargar el correo almacenado, si existe
+        loadEmail()
     }
 
-    // Verifica si hay una sesión iniciada y redirige a MainActivityantiguo si es el caso
     private fun checkUserSession() {
         val currentUser = auth.currentUser
         if (currentUser != null && currentUser.isEmailVerified) {
-            val intent = Intent(this, MainActivityantiguo::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
 
     private fun start() {
-        // Listener para el botón de login o recuperación
+
         loginActivityBinding.loginButton.setOnClickListener {
             val email = loginActivityBinding.emailEditText.text.toString().trim()
 
-            // Comprueba si estamos en el modo de recuperación de contraseña
             if (loginActivityBinding.loginButton.text == "Recuperar contraseña") {
                 if (email.isNotEmpty()) {
                     recoverPassword(email) { result, msg ->
@@ -75,7 +73,11 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                 } else {
-                    Toast.makeText(this, "Por favor, introduce tu correo electrónico", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this,
+                        "Por favor, introduce tu correo electrónico",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             } else {
                 val pass = loginActivityBinding.passwordEditText.text.toString()
@@ -83,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
                     startLogin(email, pass) { result, msg ->
                         Toast.makeText(this@LoginActivity, msg, Toast.LENGTH_LONG).show()
                         if (result) {
-                            intent = Intent(this@LoginActivity, MainActivityantiguo::class.java)
+                            intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()
                         }
@@ -111,7 +113,8 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     var msg = ""
                     try {
-                        throw taskResetEmail.exception ?: Exception("Error de reseteo inesperado")
+                        throw taskResetEmail.exception
+                            ?: Exception("Error de reseteo inesperado")
                     } catch (e: FirebaseAuthInvalidCredentialsException) {
                         msg = "El formato del email es incorrecto"
                     } catch (e: Exception) {
@@ -121,9 +124,9 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
-*/
 
-/*private fun startLogin(user: String, pass: String, onResult: (Boolean, String) -> Unit) {
+
+    private fun startLogin(user: String, pass: String, onResult: (Boolean, String) -> Unit) {
         auth.signInWithEmailAndPassword(user, pass)
             .addOnCompleteListener { taskSignIn ->
                 var msg = ""
@@ -131,7 +134,7 @@ class LoginActivity : AppCompatActivity() {
                     val possibleUser = auth.currentUser
                     if (possibleUser?.isEmailVerified == true) {
                         saveEmail(user) // Guardar el correo en SharedPreferences
-                        val intent = Intent(this, MainActivityantiguo::class.java)
+                        val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     } else {
@@ -144,15 +147,16 @@ class LoginActivity : AppCompatActivity() {
                     } catch (e: FirebaseAuthInvalidUserException) {
                         msg = "El usuario tiene problemas por haberse borrado o deshabilitado"
                     } catch (e: FirebaseAuthInvalidCredentialsException) {
-                        msg = if (e.message?.contains("There is no user record corresponding to this identifier") == true) {
-                            "El usuario no existe"
-                        } else "Contraseña incorrecta o usuario no registrado"
+                        msg =
+                            if (e.message?.contains("There is no user record corresponding to this identifier") == true) {
+                                "El usuario no existe"
+                            } else "Contraseña incorrecta o usuario no registrado"
                     } catch (e: Exception) {
                         msg = e.message.toString()
                     }
                     onResult(false, msg)
                 }
-            }*//*
+            }
 
     }
 
@@ -187,4 +191,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 }
-*/
+
+
+

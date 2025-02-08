@@ -5,8 +5,8 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="15dp"
     android:layout_marginHorizontal="5dp"
+    android:layout_marginBottom="15dp"
     app:cardBackgroundColor="#E8000000"
     app:cardCornerRadius="5dp"
     app:contentPadding="7dp">
@@ -30,8 +30,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content
-"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -125,17 +124,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="15dp"
-            android:visibility="visible"
-            >
+            android:orientation="horizontal"
+            android:visibility="visible">
 
             <ImageButton
                 android:id="@+id/edit_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:layout_marginHorizontal="5dp"
+                android:layout_weight="1"
                 android:background="@drawable/dialog_fragment_option_button"
                 android:paddingHorizontal="9dp"
                 app:srcCompat="@drawable/baseline_edit_24" />

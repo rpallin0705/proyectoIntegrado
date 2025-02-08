@@ -19,6 +19,8 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
     private lateinit var binding: FragmentRestaurantBinding
     private lateinit var adapter: RestaurantAdapter
     private val restaurantViewModel: RestaurantViewModel by viewModels()
+    private var isFirstLoad = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +52,11 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
     private fun onDeleteRestaurant(position: Int) {
         val restaurantName = adapter.restaurantList[position].name
         restaurantViewModel.deleteRestaurant(position)
-        Toast.makeText(requireContext(), "Restaurante eliminado: $restaurantName", Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            requireContext(),
+            "Restaurante eliminado: $restaurantName",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun onEditRestaurant(restaurant: Restaurant) {
@@ -75,9 +81,9 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
                 updateRestaurantList(restaurants)
             }
         }
-
         loadData()
     }
+
 
     private fun loadData() {
         restaurantViewModel.getRestaurants()
@@ -89,9 +95,15 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
             adapter.restaurantList = restaurants
             adapter.notifyDataSetChanged()
 
-            if (restaurants.size > previousSize) {
-                binding.recyclerViewLocal.smoothScrollToPosition(restaurants.size - 1)
+            if (!isFirstLoad && restaurants.size > previousSize) {
+                binding.recyclerViewLocal.post {
+                    binding.recyclerViewLocal.smoothScrollToPosition(restaurants.size - 1)
+                }
             }
+
+            isFirstLoad = false
         }
     }
+
+
 }

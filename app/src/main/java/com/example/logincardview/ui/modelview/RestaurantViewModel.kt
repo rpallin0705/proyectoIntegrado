@@ -10,7 +10,6 @@ import com.example.logincardview.domain.usecase.DeleteRestaurantUseCase
 import com.example.logincardview.domain.usecase.EditRestaurantUseCase
 import com.example.logincardview.domain.usecase.GetRestaurantsUseCase
 import com.example.logincardview.domain.usecases.AddRestaurantUseCase
-import com.example.logincardview.ui.views.fragment.RestaurantFragment
 import kotlinx.coroutines.launch
 
 class RestaurantViewModel() : ViewModel() {

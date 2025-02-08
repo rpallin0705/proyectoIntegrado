@@ -11,7 +11,6 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
 
     private val binding = ActivityRestaurantBinding.bind(view)
 
-    // Lista de estrellas para actualizar su estado
     private val starImages = listOf(
         binding.imageView3,
         binding.imageView4,
@@ -20,7 +19,6 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
         binding.imageView7
     )
 
-    // Método para renderizar el Restaurant
     fun renderize(restaurant: Restaurant) {
         binding.localName.text = restaurant.name
         binding.localAddress.text = restaurant.address
@@ -31,11 +29,9 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
             .centerCrop()
             .into(binding.localImage)
 
-        // Actualiza las estrellas según el rate
         updateStars(restaurant.rating)
     }
 
-    // Método para actualizar las estrellas según la valoración
     private fun updateStars(rate: Int) {
         for (i in starImages.indices) {
             if (i < rate) {
