@@ -37,12 +37,20 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRestaurantBinding.inflate(inflater, container, false)
-        sharedPreferences = requireActivity().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+        sharedPreferences =
+            requireActivity().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(prefListener)
 
         setupRecyclerView()
         observeViewModel()
         setupAddButton()
+
+        val isAdmin = sharedPreferences.getBoolean("is_admin", false)
+
+        if (isAdmin)
+            binding.addButton.visibility = View.VISIBLE
+         else
+            binding.addButton.visibility = View.GONE
 
         adapter.setAdminState(sharedPreferences.getBoolean("is_admin", false))
         return binding.root
@@ -68,7 +76,11 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
     private fun onDeleteRestaurant(position: Int) {
         val restaurantName = adapter.restaurantList[position].name
         restaurantViewModel.deleteRestaurant(position)
-        Toast.makeText(requireContext(), "Restaurante eliminado: $restaurantName", Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            requireContext(),
+            "Restaurante eliminado: $restaurantName",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     private fun onEditRestaurant(restaurant: Restaurant) {
@@ -108,7 +120,7 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
             adapter.setAdminState(sharedPreferences.getBoolean("is_admin", false))
 
-            if (isFirstLoad && restaurants.size > previousSize) {
+            if (!isFirstLoad && restaurants.size > previousSize) {
                 binding.recyclerViewLocal.post {
                     binding.recyclerViewLocal.smoothScrollToPosition(restaurants.size - 1)
                 }
