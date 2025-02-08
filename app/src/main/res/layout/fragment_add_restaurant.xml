@@ -156,7 +156,7 @@
                 android:layout_marginRight="48dp"
                 android:layout_weight="0.75"
                 android:background="@drawable/dialog_fragment_option_button"
-                android:src="@drawable/add_va_white" />
+                android:src="@drawable/baseline_check_24" />
 
             <ImageButton
                 android:id="@+id/negative_button"
