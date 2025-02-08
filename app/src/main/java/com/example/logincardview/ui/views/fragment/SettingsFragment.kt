@@ -25,12 +25,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        sharedPreferences = requireActivity().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        sharedPreferences = requireActivity().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
 
         nameTextView = view.findViewById(R.id.settingg_name)
         emailTextView = view.findViewById(R.id.settings_email)
         switchAdmin = view.findViewById(R.id.setting_admin_btn)
         logoutButton = view.findViewById(R.id.setting_logout_btn)
+
 
         if (!sharedPreferences.contains("isAdmin")) {
             sharedPreferences.edit().putBoolean("isAdmin", false).apply()
@@ -58,11 +59,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     }
 
     private fun loadUserData() {
-        val name = sharedPreferences.getString("userName", "Nombre no disponible")
-        val email = sharedPreferences.getString("userEmail", "Correo no disponible")
+        val email = sharedPreferences.getString("saved_email", "Correo no disponible")
         val isAdmin = sharedPreferences.getBoolean("isAdmin", false)
 
-        nameTextView.text = name
+        nameTextView.text = email?.substringBefore('@')
         emailTextView.text = email
         switchAdmin.isChecked = isAdmin
     }

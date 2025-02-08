@@ -1,5 +1,7 @@
 package com.example.logincardview.ui.views.activity
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,12 +18,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+        val email = sharedPreferences.getString("saved_email", "")
+        val recycler = binding.myNavView.getHeaderView(0)
+        val emailTextView = recycler.findViewById<TextView>(R.id.txt_email)
+        val userTextView = recycler.findViewById<TextView>(R.id.txt_name)
+        emailTextView.text = email
+        userTextView.text = email?.substringBefore('@')
 
         setSupportActionBar(binding.appBarMain.myToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) // Desactivar título predeterminado
@@ -42,6 +53,8 @@ class MainActivity : AppCompatActivity() {
         binding.appBarMain.myToolbar.setNavigationOnClickListener {
             binding.myDrawer.open()
         }
+
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
