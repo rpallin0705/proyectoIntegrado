@@ -84,9 +84,16 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
     }
 
     private fun onEditRestaurant(restaurant: Restaurant) {
-        val dialog = RestaurantDialogFragmentCU().newInstance(restaurant)
+        val dialog = RestaurantDialogFragmentCU().newInstance(restaurant, true)
         dialog.onUpdate = { updatedRestaurant ->
             restaurantViewModel.editRestaurant(restaurant, updatedRestaurant)
+
+            val updatedList = restaurantViewModel.restaurantLiveData.value?.toMutableList()
+            val index = updatedList?.indexOfFirst { it.name == restaurant.name }
+            if (index != null && index != -1) {
+                updatedList[index] = updatedRestaurant
+                adapter.updateList(updatedList)
+            }
         }
         dialog.show(parentFragmentManager, "EditRestaurantDialogFragment")
     }
@@ -95,8 +102,16 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
         val dialog = RestaurantDialogFragmentCU()
         dialog.onUpdate = { restaurant ->
             restaurantViewModel.addRestaurant(restaurant)
+
+            val updatedList = restaurantViewModel.restaurantLiveData.value?.toMutableList()
+            updatedList?.add(restaurant)
+            adapter.updateList(updatedList ?: emptyList())
+
+            binding.recyclerViewLocal.post {
+                binding.recyclerViewLocal.smoothScrollToPosition(updatedList?.size?.minus(1) ?: 0)
+            }
         }
-        dialog.show(parentFragmentManager, "AddRestaurantDialoFg")
+        dialog.show(parentFragmentManager, "AddRestaurantDialogFragment")
     }
 
     private fun observeViewModel() {
@@ -115,8 +130,7 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
     private fun updateRestaurantList(restaurants: List<Restaurant>) {
         if (adapter.restaurantList != restaurants) {
             val previousSize = adapter.restaurantList.size
-            adapter.restaurantList = restaurants
-            adapter.notifyDataSetChanged()
+            adapter.updateList(restaurants)
 
             adapter.setAdminState(sharedPreferences.getBoolean("is_admin", false))
 

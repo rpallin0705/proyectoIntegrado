@@ -23,6 +23,11 @@ class RestaurantAdapter(
         )
     }
 
+    fun updateList(newList: List<Restaurant>) {
+        restaurantList = newList
+        notifyDataSetChanged()
+    }
+
     override fun onBindViewHolder(holder: RestaurantView, position: Int) {
         val restaurant = restaurantList[position]
         holder.setAdminVisibility(isAdmin)
@@ -30,12 +35,16 @@ class RestaurantAdapter(
         holder.itemView.findViewById<ImageButton>(R.id.delete_btn).setOnClickListener {
             onDeleteClick(position)
         }
+
         holder.itemView.findViewById<ImageButton>(R.id.edit_btn).setOnClickListener {
             onEditClick(restaurant)
+
+            notifyItemChanged(position)
         }
 
         holder.renderize(restaurant)
     }
+
 
     override fun getItemCount(): Int = restaurantList.size
 

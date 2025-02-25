@@ -5,5 +5,6 @@ data class RestaurantDTO(
     val address : String,
     val phone : String,
     val rating : Int,
-    val description : String
+    val description : String,
+    var imageUri: String? = null
 )

@@ -43,14 +43,15 @@ class RestaurantViewModel() : ViewModel() {
         viewModelScope.launch {
             try {
                 addRestaurantUseCase(restaurant)
-
-                val updatedRestaurants = getRestaurantsUseCase()
-                restaurantLiveData.postValue(updatedRestaurants)
+                val currentList = restaurantLiveData.value?.toMutableList() ?: mutableListOf()
+                currentList.add(restaurant)
+                restaurantLiveData.postValue(currentList)
             } catch (e: Exception) {
                 errorLiveData.value = e.message ?: "Error desconocido"
             }
         }
     }
+
 
     fun deleteRestaurant(position: Int) {
         viewModelScope.launch {
@@ -68,11 +69,17 @@ class RestaurantViewModel() : ViewModel() {
         viewModelScope.launch {
             try {
                 editRestaurantUseCase(oldRestaurant, newRestaurant)
-                val updatedRestaurants = getRestaurantsUseCase()
-                restaurantLiveData.postValue(updatedRestaurants)
+
+                val currentList = restaurantLiveData.value?.toMutableList() ?: mutableListOf()
+                val index = currentList.indexOfFirst { it.name == oldRestaurant.name }
+                if (index != -1) {
+                    currentList[index] = newRestaurant
+                    restaurantLiveData.postValue(currentList)
+                }
             } catch (e: Exception) {
                 errorLiveData.value = e.message ?: "Error desconocido"
             }
         }
     }
+
 }
