@@ -44,12 +44,19 @@ class RestaurantDialogFragmentCU : DialogFragment() {
 
         setValuesIntoDialog(arguments)
 
-        if (!isEditable)
+        if (!isEditable) {
             disableEditing()
+        }
 
         updateStars(selectedRating)
         setupListeners()
+
+        if (!isEditable) {
+            binding.buttonCamera.visibility = View.GONE
+            binding.buttonGallery.visibility = View.GONE
+        }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -93,7 +100,7 @@ class RestaurantDialogFragmentCU : DialogFragment() {
         return fragment
     }
 
-    fun newInstance(restaurant: Restaurant, isEdit: Boolean): RestaurantDialogFragmentCU {
+    fun newInstance(restaurant: Restaurant, isEdit: Boolean = true): RestaurantDialogFragmentCU {
         val fragment = RestaurantDialogFragmentCU()
         val args = Bundle().apply {
             putString("name", restaurant.name)
@@ -101,12 +108,13 @@ class RestaurantDialogFragmentCU : DialogFragment() {
             putString("address", restaurant.address)
             putString("description", restaurant.description)
             putInt("rating", restaurant.rating)
+            putBoolean("is_editable", isEdit)
         }
-
         fragment.arguments = args
         fragment.isEditable = isEdit
         return fragment
     }
+
 
     private fun disableEditing() {
         binding.editLocalName.isEnabled = false

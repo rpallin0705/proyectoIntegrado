@@ -3,7 +3,6 @@ package com.example.logincardview.ui.adapter
 import android.content.Intent
 import android.net.Uri
 import android.view.View
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide

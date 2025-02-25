@@ -84,7 +84,7 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
     }
 
     private fun onEditRestaurant(restaurant: Restaurant) {
-        val dialog = RestaurantDialogFragmentCU().newInstance(restaurant)
+        val dialog = RestaurantDialogFragmentCU().newInstance(restaurant, true)
         dialog.onUpdate = { updatedRestaurant ->
             restaurantViewModel.editRestaurant(restaurant, updatedRestaurant)
 
@@ -98,14 +98,20 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
         dialog.show(parentFragmentManager, "EditRestaurantDialogFragment")
     }
 
-
-
     private fun showAddRestaurantDialog() {
         val dialog = RestaurantDialogFragmentCU()
         dialog.onUpdate = { restaurant ->
             restaurantViewModel.addRestaurant(restaurant)
+
+            val updatedList = restaurantViewModel.restaurantLiveData.value?.toMutableList()
+            updatedList?.add(restaurant)
+            adapter.updateList(updatedList ?: emptyList())
+
+            binding.recyclerViewLocal.post {
+                binding.recyclerViewLocal.smoothScrollToPosition(updatedList?.size?.minus(1) ?: 0)
+            }
         }
-        dialog.show(parentFragmentManager, "AddRestaurantDialoFg")
+        dialog.show(parentFragmentManager, "AddRestaurantDialogFragment")
     }
 
     private fun observeViewModel() {
