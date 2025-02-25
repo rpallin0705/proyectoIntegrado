@@ -23,6 +23,20 @@ class RestaurantAdapter(
         )
     }
 
+    fun updateList(newList: List<Restaurant>) {
+        val oldSize = restaurantList.size
+        restaurantList = newList
+
+        // Si la nueva lista es más grande, se ha añadido un restaurante
+        if (newList.size > oldSize) {
+            notifyItemInserted(newList.size - 1)
+        } else {
+            notifyDataSetChanged()
+        }
+    }
+
+
+
     override fun onBindViewHolder(holder: RestaurantView, position: Int) {
         val restaurant = restaurantList[position]
         holder.setAdminVisibility(isAdmin)
@@ -30,12 +44,16 @@ class RestaurantAdapter(
         holder.itemView.findViewById<ImageButton>(R.id.delete_btn).setOnClickListener {
             onDeleteClick(position)
         }
+
         holder.itemView.findViewById<ImageButton>(R.id.edit_btn).setOnClickListener {
             onEditClick(restaurant)
+
+            notifyItemChanged(position)
         }
 
         holder.renderize(restaurant)
     }
+
 
     override fun getItemCount(): Int = restaurantList.size
 

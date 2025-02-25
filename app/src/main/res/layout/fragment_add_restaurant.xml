@@ -18,13 +18,45 @@
             android:layout_height="125dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imageView"
+            <FrameLayout
                 android:layout_width="125dp"
-                android:layout_height="125dp"
-                android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/cardview_img1" />
+                android:layout_height="125dp">
+
+                <!-- Imagen del restaurante -->
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/cardview_img1" />
+
+                <!-- Botón para abrir la cámara -->
+                <ImageButton
+                    android:id="@+id/button_camera"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="bottom|start"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/settings_buttons"
+                    android:padding="5dp"
+                    android:src="@drawable/baseline_camera_alt_24"
+                    android:contentDescription="Abrir Cámara" />
+
+                <!-- Botón para seleccionar imagen de la galería -->
+                <ImageButton
+                    android:id="@+id/button_gallery"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/settings_buttons"
+                    android:padding="5dp"
+                    android:src="@drawable/baseline_image_24"
+                    android:contentDescription="Seleccionar Imagen" />
+
+            </FrameLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"

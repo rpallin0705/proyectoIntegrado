@@ -92,9 +92,11 @@ class RestaurantDataSource {
         restaurantList.removeAt(restaurantId)
     }
 
-    fun editRestaurant(oldRestaurant: RestaurantDTO, newRestaurant: RestaurantDTO){
-        val index = restaurantList.indexOfFirst { it.name == newRestaurant.name }
-        if (index != -1)
-            restaurantList[index] = newRestaurant
+    fun editRestaurant(oldRestaurant: RestaurantDTO, newRestaurant: RestaurantDTO) {
+        val index = restaurantList.indexOfFirst { it.name == oldRestaurant.name }
+        if (index != -1) {
+            restaurantList[index] = newRestaurant.copy(imageUri = newRestaurant.imageUri)
+        }
     }
+
 }

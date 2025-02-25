@@ -30,10 +30,19 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
         binding.localAddress.text = restaurant.address
         binding.localPhone.text = restaurant.phone
 
-        Glide.with(itemView.context)
-            .load(R.drawable.cardview_img1)
-            .centerCrop()
-            .into(binding.localImage)
+        if (!restaurant.imageUri.isNullOrEmpty()) {
+            Glide.with(itemView.context)
+                .load(Uri.parse(restaurant.imageUri))
+                .centerCrop()
+                .placeholder(R.drawable.cardview_img1)
+                .error(R.drawable.cardview_img1)
+                .into(binding.localImage)
+        } else {
+            Glide.with(itemView.context)
+                .load(R.drawable.cardview_img1)
+                .centerCrop()
+                .into(binding.localImage)
+        }
 
         updateStars(restaurant.rating)
 
@@ -54,6 +63,7 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
             dialog.show((itemView.context as AppCompatActivity).supportFragmentManager, "RestaurantDialogFragmentCU")
         }
     }
+
 
     fun setAdminVisibility(isAdmin: Boolean) {
 
