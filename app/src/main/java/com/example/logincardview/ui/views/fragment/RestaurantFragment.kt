@@ -87,9 +87,18 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
         val dialog = RestaurantDialogFragmentCU().newInstance(restaurant)
         dialog.onUpdate = { updatedRestaurant ->
             restaurantViewModel.editRestaurant(restaurant, updatedRestaurant)
+
+            val updatedList = restaurantViewModel.restaurantLiveData.value?.toMutableList()
+            val index = updatedList?.indexOfFirst { it.name == restaurant.name }
+            if (index != null && index != -1) {
+                updatedList[index] = updatedRestaurant
+                adapter.updateList(updatedList)
+            }
         }
         dialog.show(parentFragmentManager, "EditRestaurantDialogFragment")
     }
+
+
 
     private fun showAddRestaurantDialog() {
         val dialog = RestaurantDialogFragmentCU()
@@ -115,8 +124,7 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
     private fun updateRestaurantList(restaurants: List<Restaurant>) {
         if (adapter.restaurantList != restaurants) {
             val previousSize = adapter.restaurantList.size
-            adapter.restaurantList = restaurants
-            adapter.notifyDataSetChanged()
+            adapter.updateList(restaurants)
 
             adapter.setAdminState(sharedPreferences.getBoolean("is_admin", false))
 

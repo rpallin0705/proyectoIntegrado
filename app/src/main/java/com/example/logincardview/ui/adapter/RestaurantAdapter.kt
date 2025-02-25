@@ -24,18 +24,9 @@ class RestaurantAdapter(
     }
 
     fun updateList(newList: List<Restaurant>) {
-        val oldSize = restaurantList.size
         restaurantList = newList
-
-        // Si la nueva lista es más grande, se ha añadido un restaurante
-        if (newList.size > oldSize) {
-            notifyItemInserted(newList.size - 1)
-        } else {
-            notifyDataSetChanged()
-        }
+        notifyDataSetChanged()
     }
-
-
 
     override fun onBindViewHolder(holder: RestaurantView, position: Int) {
         val restaurant = restaurantList[position]
