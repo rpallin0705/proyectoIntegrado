@@ -9,9 +9,11 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.logincardview.LoginActivity
 import com.example.logincardview.R
-import com.google.firebase.auth.FirebaseAuth
+import com.example.logincardview.network.RetrofitClient
+import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
@@ -32,10 +34,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         sharedPreferences = requireActivity().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
 
-
         val isAdmin = sharedPreferences.getBoolean("is_admin", false)
         switchAdmin.isChecked = isAdmin
-
 
         switchAdmin.setOnCheckedChangeListener { _, isChecked ->
             sharedPreferences.edit().putBoolean("is_admin", isChecked).apply()
@@ -44,23 +44,39 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         loadUserData()
 
-
+        // Nuevo logout con API
         logoutButton.setOnClickListener {
-            sharedPreferences.edit().clear().apply()
-
-            FirebaseAuth.getInstance().signOut()
-
-            val intent = Intent(requireActivity(), LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+            lifecycleScope.launch {
+                logoutUser()
+            }
         }
     }
 
     private fun loadUserData() {
         val email = sharedPreferences.getString("saved_email", "Correo no disponible")
-
         nameTextView.text = email?.substringBefore('@')
         emailTextView.text = email
     }
-}
 
+    private suspend fun logoutUser() {
+        val token = sharedPreferences.getString("token", null)
+
+        if (token != null) {
+            try {
+                val response = RetrofitClient.instance.logout("Bearer $token")
+                if (response.isSuccessful) {
+                    sharedPreferences.edit().clear().apply()
+                    val intent = Intent(requireActivity(), LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(requireContext(), "Error al cerrar sesión", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Error de conexión", Toast.LENGTH_LONG).show()
+            }
+        } else {
+            Toast.makeText(requireContext(), "Token no encontrado", Toast.LENGTH_LONG).show()
+        }
+    }
+}

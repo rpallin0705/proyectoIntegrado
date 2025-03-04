@@ -5,7 +5,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -14,7 +16,10 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.logincardview.LoginActivity
 import com.example.logincardview.R
 import com.example.logincardview.databinding.ActivityMainBinding
-import com.google.firebase.auth.FirebaseAuth
+import com.example.logincardview.network.RetrofitClient
+import com.example.logincardview.utils.MySharedPreferences
+import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +30,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        MySharedPreferences.init(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -40,7 +47,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.myToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false) // Desactivar título predeterminado
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.my_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(setOf(R.id.localFragment), binding.myDrawer)
@@ -50,7 +58,8 @@ class MainActivity : AppCompatActivity() {
 
         // Escuchar cambios de fragmento para actualizar el título manualmente
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.appBarMain.myToolbar.findViewById<TextView>(R.id.toolbar_title).text = destination.label
+            binding.appBarMain.myToolbar.findViewById<TextView>(R.id.toolbar_title).text =
+                destination.label
         }
 
         binding.appBarMain.myToolbar.setNavigationOnClickListener {
@@ -61,34 +70,50 @@ class MainActivity : AppCompatActivity() {
         binding.myNavView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_logout -> {
-
-                    val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
-                    sharedPreferences.edit().clear().apply()
-
-                    FirebaseAuth.getInstance().signOut()
-
-                    val intent = Intent(this, LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    true  // Consume el clic
+                    lifecycleScope.launch {
+                        logoutUser()
+                    }
+                    true
                 }
+
                 else -> {
-                    // Si el clic no es en logout, se comporta normalmente:
-                    // Navega al destino seleccionado y cierra el Drawer.
                     val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
                     binding.myDrawer.closeDrawers()
                     handled
                 }
             }
         }
-
-
     }
 
+    private suspend fun logoutUser() {
+        val sharedPreferences = getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
 
+        val token = sharedPreferences.getString("token", null)
+        if (token != null) {
+            try {
+                val response = RetrofitClient.instance.logout("Bearer $token")
+                if (response.isSuccessful) {
+                    val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this@MainActivity, "Error al cerrar sesión", Toast.LENGTH_LONG)
+                        .show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@MainActivity, "Error de conexión", Toast.LENGTH_LONG).show()
+            }
+        } else {
+            Toast.makeText(this@MainActivity, "Token no encontrado", Toast.LENGTH_LONG).show()
+        }
+    }
 
     override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp()
+        return NavigationUI.navigateUp(
+            navController,
+            appBarConfiguration
+        ) || super.onSupportNavigateUp()
     }
 
     fun getMainScreenBinding(): ActivityMainBinding {
