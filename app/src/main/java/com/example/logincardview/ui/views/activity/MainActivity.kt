@@ -17,12 +17,14 @@ import com.example.logincardview.LoginActivity
 import com.example.logincardview.R
 import com.example.logincardview.databinding.ActivityMainBinding
 import com.example.logincardview.network.RetrofitClient
+import com.example.logincardview.ui.modelview.AuthViewModel
 import com.example.logincardview.utils.MySharedPreferences
 import kotlinx.coroutines.launch
 
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var authViewModel: AuthViewModel
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -31,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        authViewModel = AuthViewModel(this)
         MySharedPreferences.init(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -70,12 +73,18 @@ class MainActivity : AppCompatActivity() {
         binding.myNavView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_logout -> {
-                    lifecycleScope.launch {
-                        logoutUser()
-                    }
+                    authViewModel.logout(
+                        onLogoutComplete = {
+                            val intent = Intent(this@MainActivity, LoginActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                        },
+                        onError = { message ->
+                            Toast.makeText(this@MainActivity, message, Toast.LENGTH_LONG).show()
+                        }
+                    )
                     true
                 }
-
                 else -> {
                     val handled = NavigationUI.onNavDestinationSelected(menuItem, navController)
                     binding.myDrawer.closeDrawers()

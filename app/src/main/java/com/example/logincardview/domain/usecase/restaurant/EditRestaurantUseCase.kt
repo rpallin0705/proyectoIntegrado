@@ -1,4 +1,4 @@
-package com.example.logincardview.domain.usecase
+package com.example.logincardview.domain.usecase.restaurant
 
 import com.example.logincardview.domain.models.Restaurant
 

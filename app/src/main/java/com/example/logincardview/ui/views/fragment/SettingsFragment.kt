@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.logincardview.LoginActivity
 import com.example.logincardview.R
 import com.example.logincardview.network.RetrofitClient
+import com.example.logincardview.ui.modelview.AuthViewModel
 import kotlinx.coroutines.launch
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
@@ -22,11 +23,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private lateinit var emailTextView: TextView
     private lateinit var switchAdmin: SwitchCompat
     private lateinit var logoutButton: TextView
+    private lateinit var authViewModel: AuthViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // Inicializa las vistas
+        authViewModel = AuthViewModel(requireContext())
         nameTextView = view.findViewById(R.id.settingg_name)
         emailTextView = view.findViewById(R.id.settings_email)
         switchAdmin = view.findViewById(R.id.setting_admin_btn)
@@ -44,11 +47,17 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
         loadUserData()
 
-        // Nuevo logout con API
         logoutButton.setOnClickListener {
-            lifecycleScope.launch {
-                logoutUser()
-            }
+            authViewModel.logout(
+                onLogoutComplete = {
+                    val intent = Intent(requireActivity(), LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                },
+                onError = { message ->
+                    Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+                }
+            )
         }
     }
 
@@ -56,27 +65,5 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         val email = sharedPreferences.getString("saved_email", "Correo no disponible")
         nameTextView.text = email?.substringBefore('@')
         emailTextView.text = email
-    }
-
-    private suspend fun logoutUser() {
-        val token = sharedPreferences.getString("token", null)
-
-        if (token != null) {
-            try {
-                val response = RetrofitClient.instance.logout("Bearer $token")
-                if (response.isSuccessful) {
-                    sharedPreferences.edit().clear().apply()
-                    val intent = Intent(requireActivity(), LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(requireContext(), "Error al cerrar sesión", Toast.LENGTH_LONG).show()
-                }
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Error de conexión", Toast.LENGTH_LONG).show()
-            }
-        } else {
-            Toast.makeText(requireContext(), "Token no encontrado", Toast.LENGTH_LONG).show()
-        }
     }
 }
