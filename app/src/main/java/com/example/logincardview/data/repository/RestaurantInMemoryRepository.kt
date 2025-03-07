@@ -16,6 +16,7 @@ class RestaurantInMemoryRepository(
         val restaurants = restaurantService.getRestaurants()
         return restaurants.map { restaurantDTO ->
             Restaurant(
+                restaurantDTO.id,
                 restaurantDTO.name,
                 restaurantDTO.address,
                 restaurantDTO.phone,
@@ -27,6 +28,7 @@ class RestaurantInMemoryRepository(
 
     override suspend fun add(o: Restaurant) {
         val newRestaurantDTO = RestaurantDTO(
+            o.id,
             o.name,
             o.address,
             o.phone,
@@ -36,8 +38,8 @@ class RestaurantInMemoryRepository(
         restaurantService.addRestaurant(newRestaurantDTO)
     }
 
-    override suspend fun delete(id: Int): Boolean {
-        restaurantService.deleteRestaurant(id)
+    override suspend fun delete(id: Long): Boolean {
+        restaurantService.deleteRestaurant(id.toInt())
         return true;
     }
 
@@ -45,11 +47,13 @@ class RestaurantInMemoryRepository(
 
     override suspend fun edit(oldRestaurant: Restaurant, newRestaurant: Restaurant) {
         val oldRestaurantDTO = RestaurantDTO(
+            oldRestaurant.id,
             oldRestaurant.name, oldRestaurant.address, oldRestaurant.phone,
             oldRestaurant.rating, oldRestaurant.description
         )
 
         val newRestaurantDTO = RestaurantDTO(
+            newRestaurant.id,
             newRestaurant.name, newRestaurant.address, newRestaurant.phone,
             newRestaurant.rating, newRestaurant.description
         )

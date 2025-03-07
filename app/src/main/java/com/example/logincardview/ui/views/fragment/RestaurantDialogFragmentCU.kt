@@ -171,6 +171,7 @@ class RestaurantDialogFragmentCU : DialogFragment() {
 
     private fun recoverDataLayout(): Restaurant {
         return Restaurant(
+            id = 0,
             name = binding.editLocalName.text.toString(),
             address = binding.editLocalAddress.text.toString(),
             phone = binding.editLocalPhone.text.toString(),

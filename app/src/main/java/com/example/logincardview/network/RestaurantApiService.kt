@@ -1,19 +1,19 @@
 package com.example.logincardview.network
 
-import com.example.logincardview.domain.models.Restaurant
+import com.example.logincardview.data.models.RestaurantDTO
 import retrofit2.Response
 import retrofit2.http.*
 
 interface RestaurantApiService {
-    @GET("/restaurants")
-    suspend fun getRestaurants(): Response<List<Restaurant>>
+    @GET("/restaurant")
+    suspend fun getRestaurants(): Response<List<RestaurantDTO>>
 
-    @POST("/restaurants")
-    suspend fun addRestaurant(@Body restaurant: Restaurant): Response<Restaurant>
+    @POST("/restaurant")
+    suspend fun addRestaurant(@Body restaurant: RestaurantDTO): Response<RestaurantDTO>
 
-    @PUT("/restaurants/{id}")
-    suspend fun editRestaurant(@Path("id") id: Long, @Body restaurant: Restaurant): Response<Restaurant>
+    @PATCH("/restaurant/{id}")
+    suspend fun editRestaurant(@Path("id") id: Long, @Body restaurant: RestaurantDTO): Response<RestaurantDTO>
 
-    @DELETE("/restaurants/{id}")
+    @DELETE("/restaurant/{id}")
     suspend fun deleteRestaurant(@Path("id") id: Long): Response<Unit>
 }

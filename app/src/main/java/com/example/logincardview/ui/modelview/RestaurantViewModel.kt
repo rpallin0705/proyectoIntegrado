@@ -55,7 +55,7 @@ class RestaurantViewModel() : ViewModel() {
     fun deleteRestaurant(position: Int) {
         viewModelScope.launch {
             try {
-                deleteRestaurantUseCase(position)
+                deleteRestaurantUseCase(position.toLong())
                 val updatedRestaurants = getRestaurantsUseCase()
                 restaurantLiveData.postValue(updatedRestaurants)
             } catch (e: Exception) {
