@@ -1,10 +1,10 @@
 package com.example.logincardview.domain.usecase.restaurant
 
 import com.example.logincardview.domain.models.Restaurant
-import com.example.logincardview.domain.repository.RepositoryInterface
+import com.example.logincardview.data.repository.RestaurantRepository
 
-class GetRestaurantsUseCase(private val restaurantRepository: RepositoryInterface<Restaurant>) {
+class GetRestaurantsUseCase(private val repository: RestaurantRepository) {
     suspend operator fun invoke(): List<Restaurant> {
-        return restaurantRepository.getAll()
+        return repository.getAll()
     }
 }

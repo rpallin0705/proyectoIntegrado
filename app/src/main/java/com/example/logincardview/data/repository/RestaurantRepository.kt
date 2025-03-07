@@ -7,30 +7,23 @@ import com.example.logincardview.domain.repository.RepositoryInterface
 import com.example.logincardview.network.RestaurantApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import retrofit2.HttpException
 
 class RestaurantRepository(
-    private val apiService: RestaurantApiService,
-    private val inMemoryRepository: RestaurantInMemoryRepository
+    private val apiService: RestaurantApiService
 ) : RepositoryInterface<Restaurant> {
 
     override suspend fun getAll(): List<Restaurant> {
         return try {
             val response = withContext(Dispatchers.IO) { apiService.getRestaurants() }
-
             if (response.isSuccessful && response.body() != null) {
-                response.body()!!.map { it.toDomain() } // Convertir DTO a Modelo de Dominio
+                response.body()!!.map { it.toDomain() }
             } else {
-                println("Error en API, usando fallback")
-                inMemoryRepository.getAll() // Fallback a datos en memoria
+                println("Error en API")
+                emptyList()
             }
         } catch (e: Exception) {
-            if (e is HttpException) {
-                println("Error en API: ${e.message()}")
-            } else {
-                println("Error desconocido: ${e.localizedMessage}")
-            }
-            inMemoryRepository.getAll() // Fallback a datos en memoria
+            println("Error en API: ${e.localizedMessage}")
+            emptyList()
         }
     }
 
@@ -38,42 +31,33 @@ class RestaurantRepository(
         try {
             val response = withContext(Dispatchers.IO) { apiService.addRestaurant(o.toDTO()) }
             if (!response.isSuccessful) {
-                println("No se pudo agregar a la API, guardando localmente.")
-                inMemoryRepository.add(o)
+                println("No se pudo agregar a la API")
             }
         } catch (e: Exception) {
-            println("Error en la API, guardando localmente.")
-            inMemoryRepository.add(o)
+            println("Error en la API")
         }
     }
 
-    override suspend fun delete(id: Long): Boolean { // Cambiar Int a Long
+    override suspend fun delete(id: Long): Boolean {
         return try {
             val response = withContext(Dispatchers.IO) { apiService.deleteRestaurant(id) }
-            if (response.isSuccessful) {
-                true
-            } else {
-                println("No se pudo eliminar en API, eliminando localmente.")
-                inMemoryRepository.delete(id)
-            }
+            response.isSuccessful
         } catch (e: Exception) {
-            println("Error en la API, eliminando localmente.")
-            inMemoryRepository.delete(id)
+            println("Error en la API")
+            false
         }
     }
 
     override suspend fun edit(oldRestaurant: Restaurant, newRestaurant: Restaurant) {
         try {
             val response = withContext(Dispatchers.IO) {
-                apiService.editRestaurant(oldRestaurant.id, newRestaurant.toDTO()) // Aquí ya es Long
+                apiService.editRestaurant(oldRestaurant.id, newRestaurant.toDTO())
             }
             if (!response.isSuccessful) {
-                println("No se pudo editar en API, editando localmente.")
-                inMemoryRepository.edit(oldRestaurant, newRestaurant)
+                println("No se pudo editar en API")
             }
         } catch (e: Exception) {
-            println("Error en la API, editando localmente.")
-            inMemoryRepository.edit(oldRestaurant, newRestaurant)
+            println("Error en la API")
         }
     }
 }

@@ -3,40 +3,32 @@ package com.example.logincardview.ui.modelview
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.logincardview.data.repository.RestaurantInMemoryRepository
+import com.example.logincardview.data.repository.RestaurantRepository
 import com.example.logincardview.domain.models.Restaurant
+import com.example.logincardview.domain.usecase.restaurant.AddRestaurantUseCase
 import com.example.logincardview.domain.usecase.restaurant.DeleteRestaurantUseCase
 import com.example.logincardview.domain.usecase.restaurant.EditRestaurantUseCase
 import com.example.logincardview.domain.usecase.restaurant.GetRestaurantsUseCase
-import com.example.logincardview.domain.usecase.restaurant.AddRestaurantUseCase
 import kotlinx.coroutines.launch
 
-class RestaurantViewModel() : ViewModel() {
+class RestaurantViewModel(private val repository: RestaurantRepository) : ViewModel() {
 
     val restaurantLiveData = MutableLiveData<List<Restaurant>>()
     private val progressBarLiveData = MutableLiveData<Boolean>()
     private val errorLiveData = MutableLiveData<String>()
-    private val repository: RestaurantInMemoryRepository = RestaurantInMemoryRepository()
-    private val getRestaurantsUseCase: GetRestaurantsUseCase = GetRestaurantsUseCase(repository)
-    private val addRestaurantUseCase: AddRestaurantUseCase = AddRestaurantUseCase(repository)
-    private val deleteRestaurantUseCase: DeleteRestaurantUseCase = DeleteRestaurantUseCase(repository)
-    private val editRestaurantUseCase: EditRestaurantUseCase = EditRestaurantUseCase(repository)
+
+    private val getRestaurantsUseCase = GetRestaurantsUseCase(repository)
+    private val addRestaurantUseCase = AddRestaurantUseCase(repository)
+    private val deleteRestaurantUseCase = DeleteRestaurantUseCase(repository)
+    private val editRestaurantUseCase = EditRestaurantUseCase(repository)
 
     fun getRestaurants() {
-        progressBarLiveData.value = true
         viewModelScope.launch {
-            try {
-                val data = getRestaurantsUseCase()
-                data.let {
-                    restaurantLiveData.value = it
-                }
-            } catch (e: Exception) {
-                errorLiveData.value = e.message ?: "Error desconocido"
-            } finally {
-                progressBarLiveData.value = false
-            }
+            val data = repository.getAll()
+            restaurantLiveData.postValue(data)
         }
     }
+
 
     fun addRestaurant(restaurant: Restaurant) {
         viewModelScope.launch {
@@ -51,11 +43,10 @@ class RestaurantViewModel() : ViewModel() {
         }
     }
 
-
-    fun deleteRestaurant(position: Int) {
+    fun deleteRestaurant(id: Long) {
         viewModelScope.launch {
             try {
-                deleteRestaurantUseCase(position.toLong())
+                deleteRestaurantUseCase(id)
                 val updatedRestaurants = getRestaurantsUseCase()
                 restaurantLiveData.postValue(updatedRestaurants)
             } catch (e: Exception) {
@@ -80,5 +71,4 @@ class RestaurantViewModel() : ViewModel() {
             }
         }
     }
-
 }

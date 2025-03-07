@@ -33,8 +33,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        authViewModel = AuthViewModel(this)
         MySharedPreferences.init(this)
+        authViewModel = AuthViewModel(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
