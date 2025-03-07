@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         val token = sharedPreferences.getString("token", null)
         if (token != null) {
             try {
-                val response = RetrofitClient.instance.logout("Bearer $token")
+                val response = RetrofitClient.authApi.logout("Bearer $token")
                 if (response.isSuccessful) {
                     val intent = Intent(this@MainActivity, LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

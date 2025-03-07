@@ -7,7 +7,7 @@ import com.example.logincardview.utils.MySharedPreferences
 class LoginUseCase {
     suspend operator fun invoke(email: String, password: String): Boolean {
         return try {
-            val response = RetrofitClient.instance.login(UserRequest(email, password))
+            val response = RetrofitClient.authApi.login(UserRequest(email, password))
             if (response.isSuccessful && response.body() != null) {
                 val token = response.body()!!.token
                 MySharedPreferences.saveToken(token)
