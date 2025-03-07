@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_logout -> {
                     authViewModel.logout(
                         onLogoutComplete = {
+                            Toast.makeText(this@MainActivity, "Logout exitoso", Toast.LENGTH_LONG).show()
                             val intent = Intent(this@MainActivity, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)

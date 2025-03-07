@@ -1,21 +1,20 @@
 package com.example.logincardview
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.logincardview.databinding.LoginActivityBinding
-import com.example.logincardview.repository.AuthRepository
+import com.example.logincardview.ui.modelview.AuthViewModel
 import com.example.logincardview.ui.views.activity.MainActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: LoginActivityBinding
-    private lateinit var sharedPreferences: SharedPreferences
-    private val authRepository = AuthRepository()
+    private val authViewModel: AuthViewModel by viewModels {
+        AuthViewModel.provideFactory(applicationContext)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,15 +22,23 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.hide()
 
-        sharedPreferences = getSharedPreferences("login_prefs", MODE_PRIVATE)
         loadEmail()
 
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString().trim()
-            val pass = binding.passwordEditText.text.toString()
+            val password = binding.passwordEditText.text.toString()
 
-            if (email.isNotEmpty() && pass.isNotEmpty()) {
-                login(email, pass)
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                authViewModel.login(email, password,
+                    onSuccess = {
+                        Toast.makeText(this, "Login exitoso", Toast.LENGTH_LONG).show()
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                        finish()
+                    },
+                    onError = { errorMessage ->
+                        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+                    }
+                )
             } else {
                 Toast.makeText(this, "Tienes algún campo vacío", Toast.LENGTH_LONG).show()
             }
@@ -42,30 +49,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun login(email: String, password: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val token = authRepository.login(email, password)
-
-            runOnUiThread {
-                if (token != null) {
-                    saveToken(token)
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-                    finish()
-                } else {
-                    Toast.makeText(this@LoginActivity, "Error al iniciar sesión", Toast.LENGTH_LONG).show()
-                }
-            }
-        }
-    }
-
-    private fun saveToken(token: String) {
-        val editor = sharedPreferences.edit()
-        editor.putString("token", token)
-        editor.apply()
-    }
-
     private fun loadEmail() {
-        val savedEmail = sharedPreferences.getString("saved_email", "")
+        val savedEmail = authViewModel.getSavedEmail()
         binding.emailEditText.setText(savedEmail)
     }
 }
