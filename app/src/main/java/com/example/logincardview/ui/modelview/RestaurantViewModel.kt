@@ -1,15 +1,14 @@
 package com.example.logincardview.ui.modelview
 
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.logincardview.data.repository.RestaurantInMemoryRepository
 import com.example.logincardview.domain.models.Restaurant
-import com.example.logincardview.domain.usecase.DeleteRestaurantUseCase
-import com.example.logincardview.domain.usecase.EditRestaurantUseCase
-import com.example.logincardview.domain.usecase.GetRestaurantsUseCase
-import com.example.logincardview.domain.usecases.AddRestaurantUseCase
+import com.example.logincardview.domain.usecase.restaurant.DeleteRestaurantUseCase
+import com.example.logincardview.domain.usecase.restaurant.EditRestaurantUseCase
+import com.example.logincardview.domain.usecase.restaurant.GetRestaurantsUseCase
+import com.example.logincardview.domain.usecase.restaurant.AddRestaurantUseCase
 import kotlinx.coroutines.launch
 
 class RestaurantViewModel() : ViewModel() {

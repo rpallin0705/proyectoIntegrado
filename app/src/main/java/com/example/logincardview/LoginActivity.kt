@@ -1,198 +1,56 @@
 package com.example.logincardview
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.example.logincardview.databinding.LoginActivityBinding
+import com.example.logincardview.ui.modelview.AuthViewModel
 import com.example.logincardview.ui.views.activity.MainActivity
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
 class LoginActivity : AppCompatActivity() {
-
-    private lateinit var loginActivityBinding: LoginActivityBinding
-    private lateinit var auth: FirebaseAuth
-    private lateinit var sharedPreferences: SharedPreferences
-
-    companion object {
-        private const val MYUSER = "usuario"
-        private const val MYPASS = "1234"
+    private lateinit var binding: LoginActivityBinding
+    private val authViewModel: AuthViewModel by viewModels {
+        AuthViewModel.provideFactory(applicationContext)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-
-        loginActivityBinding = LoginActivityBinding.inflate(layoutInflater)
-        setContentView(loginActivityBinding.root)
-
+        binding = LoginActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.hide()
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
-
-        init()
-        checkUserSession()
-        start()
-    }
-
-
-    private fun init() {
-        this.auth = FirebaseAuth.getInstance()
-        sharedPreferences = getSharedPreferences("login_prefs", MODE_PRIVATE)
         loadEmail()
-    }
 
-    private fun checkUserSession() {
-        val currentUser = auth.currentUser
-        if (currentUser != null && currentUser.isEmailVerified) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-    }
+        binding.loginButton.setOnClickListener {
+            val email = binding.emailEditText.text.toString().trim()
+            val password = binding.passwordEditText.text.toString()
 
-    private fun start() {
-
-        loginActivityBinding.loginButton.setOnClickListener {
-            val email = loginActivityBinding.emailEditText.text.toString().trim()
-
-            if (loginActivityBinding.loginButton.text == "Recuperar contraseña") {
-                if (email.isNotEmpty()) {
-                    recoverPassword(email) { result, msg ->
-                        Toast.makeText(this@LoginActivity, msg, Toast.LENGTH_LONG).show()
-                        if (result) {
-                            resetToLoginState()
-                        }
-                    }
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Por favor, introduce tu correo electrónico",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            } else {
-                val pass = loginActivityBinding.passwordEditText.text.toString()
-                if (email.isNotEmpty() && pass.isNotEmpty())
-                    startLogin(email, pass) { result, msg ->
-                        Toast.makeText(this@LoginActivity, msg, Toast.LENGTH_LONG).show()
-                        if (result) {
-                            intent = Intent(this@LoginActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                    }
-                else
-                    Toast.makeText(this, "Tienes algún campo vacío", Toast.LENGTH_LONG).show()
-            }
-        }
-
-        loginActivityBinding.resetPasswordText.setOnClickListener {
-            toggleToRecoveryState()
-        }
-
-        loginActivityBinding.singUpText.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun recoverPassword(email: String, onResult: (Boolean, String) -> Unit) {
-        auth.sendPasswordResetEmail(email)
-            .addOnCompleteListener { taskResetEmail ->
-                if (taskResetEmail.isSuccessful) {
-                    onResult(true, "Acabamos de enviarte un email con la nueva password")
-                } else {
-                    var msg = ""
-                    try {
-                        throw taskResetEmail.exception
-                            ?: Exception("Error de reseteo inesperado")
-                    } catch (e: FirebaseAuthInvalidCredentialsException) {
-                        msg = "El formato del email es incorrecto"
-                    } catch (e: Exception) {
-                        msg = e.message.toString()
-                    }
-                    onResult(false, msg)
-                }
-            }
-    }
-
-
-    private fun startLogin(user: String, pass: String, onResult: (Boolean, String) -> Unit) {
-        auth.signInWithEmailAndPassword(user, pass)
-            .addOnCompleteListener { taskSignIn ->
-                var msg = ""
-                if (taskSignIn.isSuccessful) {
-                    val possibleUser = auth.currentUser
-                    if (possibleUser?.isEmailVerified == true) {
-                        saveEmail(user) // Guardar el correo en SharedPreferences
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                authViewModel.login(email, password,
+                    onSuccess = {
+                        Toast.makeText(this, "Login exitoso", Toast.LENGTH_LONG).show()
+                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
                         finish()
-                    } else {
-                        auth.signOut()
-                        onResult(false, "Debes verificar tu correo antes de loguearte")
+                    },
+                    onError = { errorMessage ->
+                        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
                     }
-                } else {
-                    try {
-                        throw taskSignIn.exception ?: Exception("Error desconocido")
-                    } catch (e: FirebaseAuthInvalidUserException) {
-                        msg = "El usuario tiene problemas por haberse borrado o deshabilitado"
-                    } catch (e: FirebaseAuthInvalidCredentialsException) {
-                        msg =
-                            if (e.message?.contains("There is no user record corresponding to this identifier") == true) {
-                                "El usuario no existe"
-                            } else "Contraseña incorrecta o usuario no registrado"
-                    } catch (e: Exception) {
-                        msg = e.message.toString()
-                    }
-                    onResult(false, msg)
-                }
+                )
+            } else {
+                Toast.makeText(this, "Tienes algún campo vacío", Toast.LENGTH_LONG).show()
             }
+        }
 
-    }
-
-    private fun saveEmail(email: String) {
-        val editor = sharedPreferences.edit()
-        editor.putString("saved_email", email)
-        editor.apply()
+        binding.singUpText.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
     }
 
     private fun loadEmail() {
-        val savedEmail = sharedPreferences.getString("saved_email", "")
-        if (!savedEmail.isNullOrEmpty()) {
-            loginActivityBinding.emailEditText.setText(savedEmail)
-        }
-    }
-
-    private fun toggleToRecoveryState() {
-        loginActivityBinding.passwordEditText.visibility = android.view.View.INVISIBLE
-        loginActivityBinding.loginButton.text = "Recuperar contraseña"
-        loginActivityBinding.resetPasswordText.text = "Volver al login"
-        loginActivityBinding.resetPasswordText.setOnClickListener {
-            resetToLoginState()
-        }
-    }
-
-    private fun resetToLoginState() {
-        loginActivityBinding.passwordEditText.visibility = android.view.View.VISIBLE
-        loginActivityBinding.loginButton.text = "Login"
-        loginActivityBinding.resetPasswordText.text = "Recuperar contraseña"
-        loginActivityBinding.resetPasswordText.setOnClickListener {
-            toggleToRecoveryState()
-        }
+        val savedEmail = authViewModel.getSavedEmail()
+        binding.emailEditText.setText(savedEmail)
     }
 }
-
-
-
