@@ -68,9 +68,18 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
     private fun setupRecyclerView() {
         binding.recyclerViewLocal.layoutManager = LinearLayoutManager(requireContext())
-        adapter = RestaurantAdapter(emptyList(), ::onDeleteRestaurant, ::onEditRestaurant)
+
+        adapter = RestaurantAdapter(
+            emptyList(),
+            ::onDeleteRestaurant,
+            ::onEditRestaurant,
+            ::onFavoriteClick,
+            emptySet()
+        )
+
         binding.recyclerViewLocal.adapter = adapter
     }
+
 
     private fun setupAddButton() {
         binding.addButton.setOnClickListener {
@@ -117,12 +126,23 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
     private fun observeViewModel() {
         restaurantViewModel.restaurantLiveData.observe(viewLifecycleOwner) { restaurants ->
-            if (restaurants.isNotEmpty()) {
-                updateRestaurantList(restaurants)
+            restaurantViewModel.favoritesLiveData.observe(viewLifecycleOwner) { favorites ->
+                adapter.updateList(restaurants)
+                adapter = RestaurantAdapter(
+                    restaurants,
+                    ::onDeleteRestaurant,
+                    ::onEditRestaurant,
+                    ::onFavoriteClick,
+                    favorites
+                )
+                binding.recyclerViewLocal.adapter = adapter
             }
         }
-        loadData()
+
+        restaurantViewModel.getRestaurants()
+        restaurantViewModel.getFavoriteRestaurants() // Obtener favoritos también
     }
+
 
     private fun loadData() {
         restaurantViewModel.getRestaurants()
@@ -143,4 +163,9 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
             isFirstLoad = false
         }
     }
+
+    private fun onFavoriteClick(restaurantId: Long) {
+        restaurantViewModel.toggleFavorite(restaurantId)
+    }
+
 }

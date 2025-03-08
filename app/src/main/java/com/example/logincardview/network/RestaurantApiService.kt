@@ -16,4 +16,10 @@ interface RestaurantApiService {
 
     @DELETE("/restaurant/{id}")
     suspend fun deleteRestaurant(@Path("id") id: Long): Response<Unit>
+
+    @GET("/favorites")
+    suspend fun getFavorites(): Response<List<Long>>
+
+    @POST("/favorites/{id}")
+    suspend fun toggleFavorite(@Path("id") id: Long): Response<List<Long>>
 }

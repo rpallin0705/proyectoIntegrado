@@ -12,7 +12,10 @@
             android:id="@+id/settingsFragment"
             android:icon="@drawable/baseline_phone_24"
             android:title="Settings" />
-
+        <item
+            android:id="@+id/favoritesFragment"
+            android:icon="@drawable/favorite_va"
+            android:title="Favoritos" />
     </group>
     <item android:title="">
         <menu>

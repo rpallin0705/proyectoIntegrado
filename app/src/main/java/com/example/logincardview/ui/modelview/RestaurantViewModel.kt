@@ -17,6 +17,7 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
     val restaurantLiveData = MutableLiveData<List<Restaurant>>()
     private val progressBarLiveData = MutableLiveData<Boolean>()
     private val errorLiveData = MutableLiveData<String>()
+    val favoritesLiveData = MutableLiveData<Set<Long>>()
 
     private val getRestaurantsUseCase = GetRestaurantsUseCase(repository)
     private val addRestaurantUseCase = AddRestaurantUseCase(repository)
@@ -27,6 +28,20 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
         viewModelScope.launch {
             val data = repository.getAll()
             restaurantLiveData.postValue(data)
+        }
+    }
+
+    fun getFavoriteRestaurants() {
+        viewModelScope.launch {
+            val favoriteIds = repository.getFavorites()
+            favoritesLiveData.postValue(favoriteIds)
+        }
+    }
+
+    fun toggleFavorite(restaurantId: Long) {
+        viewModelScope.launch {
+            val updatedFavorites = repository.toggleFavorite(restaurantId)
+            favoritesLiveData.postValue(updatedFavorites)
         }
     }
 

@@ -10,7 +10,9 @@ import com.example.logincardview.domain.models.Restaurant
 class RestaurantAdapter(
     var restaurantList: List<Restaurant>,
     private val onDeleteClick: (Restaurant) -> Unit,
-    private val onEditClick: (Restaurant) -> Unit
+    private val onEditClick: (Restaurant) -> Unit,
+    private val onFavoriteClick: (Long) -> Unit,
+    private val favoriteRestaurants: Set<Long>
 ) : RecyclerView.Adapter<RestaurantView>() {
 
     var isAdmin: Boolean = false
@@ -18,18 +20,17 @@ class RestaurantAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantView {
         val layoutInflater = LayoutInflater.from(parent.context)
         val layoutItemRestaurant = R.layout.activity_restaurant
-        return RestaurantView(
-            layoutInflater.inflate(layoutItemRestaurant, parent, false)
-        )
+        return RestaurantView(layoutInflater.inflate(layoutItemRestaurant, parent, false))
     }
 
     fun updateList(newList: List<Restaurant>) {
-        restaurantList = newList // Actualiza la lista con una nueva referencia
+        restaurantList = newList
         notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: RestaurantView, position: Int) {
         val restaurant = restaurantList[position]
+        val isFavorite = favoriteRestaurants.contains(restaurant.id)
         holder.setAdminVisibility(isAdmin)
 
         holder.itemView.findViewById<ImageButton>(R.id.delete_btn).setOnClickListener {
@@ -42,7 +43,9 @@ class RestaurantAdapter(
             notifyItemChanged(position)
         }
 
-        holder.renderize(restaurant)
+        holder.renderize(restaurant, isFavorite) { restaurantId ->
+            onFavoriteClick(restaurantId)
+        }
     }
 
     fun removeItem(position: Int) {
