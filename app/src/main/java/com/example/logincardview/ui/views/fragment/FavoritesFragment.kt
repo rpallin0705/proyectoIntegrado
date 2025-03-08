@@ -34,14 +34,21 @@ class FavoritesFragment : Fragment(R.layout.fragment_restaurant) {
 
     private fun setupRecyclerView() {
         binding.recyclerViewLocal.layoutManager = LinearLayoutManager(requireContext())
-        adapter = RestaurantAdapter(emptyList(), {}, {}, {}, emptySet())
+        adapter = RestaurantAdapter(
+            emptyList(),
+            onDeleteClick = {},
+            onEditClick = {},
+            onFavoriteClick = { restaurantId ->
+                restaurantViewModel.toggleFavorite(restaurantId)
+            },
+            favoriteRestaurants = emptySet()
+        )
         binding.recyclerViewLocal.adapter = adapter
     }
 
     private fun observeViewModel() {
         restaurantViewModel.getRestaurants()
         restaurantViewModel.getFavoriteRestaurants()
-
 
         restaurantViewModel.restaurantLiveData.observe(viewLifecycleOwner) { restaurants ->
             val favoriteIds = restaurantViewModel.favoritesLiveData.value ?: emptySet()
@@ -55,5 +62,6 @@ class FavoritesFragment : Fragment(R.layout.fragment_restaurant) {
             adapter.updateList(favoriteRestaurants)
         }
     }
+
 
 }

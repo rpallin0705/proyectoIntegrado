@@ -43,12 +43,14 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
                 .into(binding.localImage)
         }
 
+        updateStars(restaurant.rating)
+
         binding.favButton.setImageResource(
             if (isFavorite) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24
         )
 
         binding.favButton.setOnClickListener {
-            restaurant.id?.let { id -> onFavoriteClick(id) }
+            onFavoriteClick(restaurant.id!!)
         }
 
         updateStars(restaurant.rating)
