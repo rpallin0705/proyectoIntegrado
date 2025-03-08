@@ -34,11 +34,15 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
     fun addRestaurant(restaurant: Restaurant) {
         viewModelScope.launch {
             try {
-                Log.d("RestaurantViewModel", "Añadiendo restaurante: $restaurant")
-                addRestaurantUseCase(restaurant)
-                getRestaurants()
+                val newRestaurant = addRestaurantUseCase(restaurant)
+                if (newRestaurant != null) {
+                    val currentList = restaurantLiveData.value?.toMutableList() ?: mutableListOf()
+                    currentList.add(newRestaurant)
+                    restaurantLiveData.postValue(currentList)
+                } else {
+                    errorLiveData.postValue("Error al añadir el restaurante")
+                }
             } catch (e: Exception) {
-                Log.e("RestaurantViewModel", "Error al añadir restaurante", e)
                 errorLiveData.postValue(e.message ?: "Error desconocido")
             }
         }
