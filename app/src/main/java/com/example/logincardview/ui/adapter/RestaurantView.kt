@@ -58,7 +58,7 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
         }
 
         binding.localImage.setOnClickListener {
-            val dialog = RestaurantDialogFragmentCU().newInstance(restaurant, false)
+            val dialog = RestaurantDialogFragmentCU().newInstance(restaurant, isEdit = false)
             dialog.show((itemView.context as AppCompatActivity).supportFragmentManager, "RestaurantDialogFragmentCU")
         }
     }

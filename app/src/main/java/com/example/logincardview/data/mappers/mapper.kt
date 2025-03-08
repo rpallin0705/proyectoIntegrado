@@ -17,7 +17,7 @@ fun RestaurantDTO.toDomain(): Restaurant {
 
 fun Restaurant.toDTO(): RestaurantDTO {
     return RestaurantDTO(
-        id = this.id,
+        id = this.id!!,
         name = this.name,
         address = this.address,
         phone = this.phone,

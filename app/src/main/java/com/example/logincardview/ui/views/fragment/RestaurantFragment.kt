@@ -80,7 +80,7 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
     private fun onDeleteRestaurant(restaurant: Restaurant) {
         val restaurantId = restaurant.id
-        restaurantViewModel.deleteRestaurant(restaurantId)
+        restaurantViewModel.deleteRestaurant(restaurantId!!)
 
         Toast.makeText(
             requireContext(),
@@ -90,32 +90,27 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
     }
 
     private fun onEditRestaurant(restaurant: Restaurant) {
-        val dialog = RestaurantDialogFragmentCU().newInstance(restaurant, true)
+        val dialog = RestaurantDialogFragmentCU().newInstance(restaurant, isEdit = true)
         dialog.onUpdate = { updatedRestaurant ->
             restaurantViewModel.editRestaurant(restaurant, updatedRestaurant)
-
-            val updatedList = restaurantViewModel.restaurantLiveData.value?.toMutableList()
-            val index = updatedList?.indexOfFirst { it.id == restaurant.id }
-            if (index != null && index != -1) {
-                updatedList[index] = updatedRestaurant
-                adapter.updateList(updatedList)
-            }
         }
         dialog.show(parentFragmentManager, "EditRestaurantDialogFragment")
     }
 
     private fun showAddRestaurantDialog() {
-        val dialog = RestaurantDialogFragmentCU()
+        val dialog = RestaurantDialogFragmentCU().newInstance(
+            Restaurant(
+                id = null,
+                name = "",
+                address = "",
+                phone = "",
+                rating = 0,
+                description = ""
+            ),
+            isEdit = true
+        )
         dialog.onUpdate = { restaurant ->
             restaurantViewModel.addRestaurant(restaurant)
-
-            val updatedList = restaurantViewModel.restaurantLiveData.value?.toMutableList()
-            updatedList?.add(restaurant)
-            adapter.updateList(updatedList ?: emptyList())
-
-            binding.recyclerViewLocal.post {
-                binding.recyclerViewLocal.smoothScrollToPosition(updatedList?.size?.minus(1) ?: 0)
-            }
         }
         dialog.show(parentFragmentManager, "AddRestaurantDialogFragment")
     }

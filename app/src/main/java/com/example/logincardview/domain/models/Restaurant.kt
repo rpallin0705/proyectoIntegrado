@@ -1,7 +1,7 @@
 package com.example.logincardview.domain.models
 
 data class Restaurant(
-    val id: Long,
+    val id: Long?,
     val name: String,
     val address: String,
     val phone: String,

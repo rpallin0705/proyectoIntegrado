@@ -1,5 +1,6 @@
 package com.example.logincardview.ui.modelview
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -33,12 +34,12 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
     fun addRestaurant(restaurant: Restaurant) {
         viewModelScope.launch {
             try {
+                Log.d("RestaurantViewModel", "Añadiendo restaurante: $restaurant")
                 addRestaurantUseCase(restaurant)
-                val currentList = restaurantLiveData.value?.toMutableList() ?: mutableListOf()
-                currentList.add(restaurant)
-                restaurantLiveData.postValue(currentList)
+                getRestaurants()
             } catch (e: Exception) {
-                errorLiveData.value = e.message ?: "Error desconocido"
+                Log.e("RestaurantViewModel", "Error al añadir restaurante", e)
+                errorLiveData.postValue(e.message ?: "Error desconocido")
             }
         }
     }
@@ -58,16 +59,12 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
     fun editRestaurant(oldRestaurant: Restaurant, newRestaurant: Restaurant) {
         viewModelScope.launch {
             try {
+                Log.d("RestaurantViewModel", "Editando restaurante de $oldRestaurant a $newRestaurant")
                 editRestaurantUseCase(oldRestaurant, newRestaurant)
-
-                val currentList = restaurantLiveData.value?.toMutableList() ?: mutableListOf()
-                val index = currentList.indexOfFirst { it.name == oldRestaurant.name }
-                if (index != -1) {
-                    currentList[index] = newRestaurant
-                    restaurantLiveData.postValue(currentList)
-                }
+                getRestaurants()
             } catch (e: Exception) {
-                errorLiveData.value = e.message ?: "Error desconocido"
+                Log.e("RestaurantViewModel", "Error al editar restaurante", e)
+                errorLiveData.postValue(e.message ?: "Error desconocido")
             }
         }
     }
