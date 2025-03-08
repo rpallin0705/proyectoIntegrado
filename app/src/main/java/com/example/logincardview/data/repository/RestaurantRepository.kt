@@ -41,16 +41,16 @@ class RestaurantRepository(
     override suspend fun add(o: Restaurant) {
         try {
             Log.d("RestaurantRepository", "Enviando POST con: $o")
-            val response = withContext(Dispatchers.IO) { apiService.addRestaurant(o.toDTO()) }
-
+            val response = withContext(Dispatchers.IO) {
+                apiService.addRestaurant(o.toDTO()) // Aquí es donde puede fallar
+            }
             if (!response.isSuccessful) {
-                val errorBody = response.errorBody()?.string()
-                Log.e("RestaurantRepository", "Error en API: $errorBody")
+                Log.e("RestaurantRepository", "Error en API: ${response.errorBody()?.string()}")
             } else {
-                Log.d("RestaurantRepository", "Restaurante añadido con éxito")
+                Log.d("RestaurantRepository", "Restaurante añadido correctamente")
             }
         } catch (e: Exception) {
-            Log.e("RestaurantRepository", "Excepción en API: ${e.localizedMessage}", e)
+            Log.e("RestaurantRepository", "Excepción en API: ${e.message}")
         }
     }
 

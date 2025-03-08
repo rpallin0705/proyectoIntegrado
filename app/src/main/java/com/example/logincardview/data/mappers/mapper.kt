@@ -17,12 +17,12 @@ fun RestaurantDTO.toDomain(): Restaurant {
 
 fun Restaurant.toDTO(): RestaurantDTO {
     return RestaurantDTO(
-        id = this.id!!,
+        id = this.id ?: 0,
         name = this.name,
         address = this.address,
         phone = this.phone,
-        rating = this.rating,
-        description = this.description,
-        imageUri = this.imageUri
+        rating = this.rating ?: 0,
+        description = this.description ?: "",
+        imageUri = this.imageUri ?: ""
     )
 }
