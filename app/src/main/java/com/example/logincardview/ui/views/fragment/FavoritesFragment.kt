@@ -1,3 +1,5 @@
+package com.example.logincardview.ui.views.fragment
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,14 +39,21 @@ class FavoritesFragment : Fragment(R.layout.fragment_restaurant) {
     }
 
     private fun observeViewModel() {
-        restaurantViewModel.restaurantLiveData.observe(viewLifecycleOwner) { restaurants ->
-            restaurantViewModel.favoritesLiveData.observe(viewLifecycleOwner) { favorites ->
-                val favoriteRestaurants = restaurants.filter { it.id in favorites }
-                adapter.updateList(favoriteRestaurants)
-            }
-        }
-
         restaurantViewModel.getRestaurants()
         restaurantViewModel.getFavoriteRestaurants()
+
+
+        restaurantViewModel.restaurantLiveData.observe(viewLifecycleOwner) { restaurants ->
+            val favoriteIds = restaurantViewModel.favoritesLiveData.value ?: emptySet()
+            val favoriteRestaurants = restaurants.filter { it.id in favoriteIds }
+            adapter.updateList(favoriteRestaurants)
+        }
+
+        restaurantViewModel.favoritesLiveData.observe(viewLifecycleOwner) { favorites ->
+            val restaurants = restaurantViewModel.restaurantLiveData.value ?: emptyList()
+            val favoriteRestaurants = restaurants.filter { it.id in favorites }
+            adapter.updateList(favoriteRestaurants)
+        }
     }
+
 }

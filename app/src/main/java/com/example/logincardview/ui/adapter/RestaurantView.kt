@@ -44,7 +44,7 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
         }
 
         binding.favButton.setImageResource(
-            if (isFavorite) R.drawable.favorite_va else R.drawable.baseline_favorite_border_24
+            if (isFavorite) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24
         )
 
         binding.favButton.setOnClickListener {

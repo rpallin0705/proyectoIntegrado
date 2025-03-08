@@ -12,7 +12,7 @@ class RestaurantAdapter(
     private val onDeleteClick: (Restaurant) -> Unit,
     private val onEditClick: (Restaurant) -> Unit,
     private val onFavoriteClick: (Long) -> Unit,
-    private val favoriteRestaurants: Set<Long>
+    private var favoriteRestaurants: Set<Long>
 ) : RecyclerView.Adapter<RestaurantView>() {
 
     var isAdmin: Boolean = false
@@ -46,6 +46,11 @@ class RestaurantAdapter(
         holder.renderize(restaurant, isFavorite) { restaurantId ->
             onFavoriteClick(restaurantId)
         }
+    }
+
+    fun updateFavorites(newFavorites: Set<Long>) {
+        this.favoriteRestaurants = newFavorites
+        notifyDataSetChanged()
     }
 
     fun removeItem(position: Int) {

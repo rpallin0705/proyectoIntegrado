@@ -40,11 +40,11 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
 
     fun toggleFavorite(restaurantId: Long) {
         viewModelScope.launch {
-            val updatedFavorites = repository.toggleFavorite(restaurantId)
+            repository.toggleFavorite(restaurantId)
+            val updatedFavorites = repository.getFavorites()
             favoritesLiveData.postValue(updatedFavorites)
         }
     }
-
 
     fun addRestaurant(restaurant: Restaurant) {
         viewModelScope.launch {
