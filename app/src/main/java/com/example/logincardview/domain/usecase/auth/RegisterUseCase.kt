@@ -6,7 +6,7 @@ import com.example.logincardview.network.RetrofitClient
 class RegisterUseCase {
     suspend operator fun invoke(email: String, password: String): Boolean {
         return try {
-            val response = RetrofitClient.instance.register(UserRequest(email, password))
+            val response = RetrofitClient.authApi.register(UserRequest(email, password))
             response.isSuccessful
         } catch (e: Exception) {
             false

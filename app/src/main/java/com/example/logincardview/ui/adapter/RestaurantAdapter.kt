@@ -8,8 +8,8 @@ import com.example.logincardview.R
 import com.example.logincardview.domain.models.Restaurant
 
 class RestaurantAdapter(
-    var restaurantList: List<Restaurant> = emptyList(),
-    private val onDeleteClick: (Int) -> Unit,
+    var restaurantList: List<Restaurant>,
+    private val onDeleteClick: (Restaurant) -> Unit,
     private val onEditClick: (Restaurant) -> Unit
 ) : RecyclerView.Adapter<RestaurantView>() {
 
@@ -24,7 +24,7 @@ class RestaurantAdapter(
     }
 
     fun updateList(newList: List<Restaurant>) {
-        restaurantList = newList
+        restaurantList = newList // Actualiza la lista con una nueva referencia
         notifyDataSetChanged()
     }
 
@@ -33,18 +33,22 @@ class RestaurantAdapter(
         holder.setAdminVisibility(isAdmin)
 
         holder.itemView.findViewById<ImageButton>(R.id.delete_btn).setOnClickListener {
-            onDeleteClick(position)
+            onDeleteClick(restaurant)
+            removeItem(position)
         }
 
         holder.itemView.findViewById<ImageButton>(R.id.edit_btn).setOnClickListener {
             onEditClick(restaurant)
-
             notifyItemChanged(position)
         }
 
         holder.renderize(restaurant)
     }
 
+    fun removeItem(position: Int) {
+        restaurantList = restaurantList.toMutableList().apply { removeAt(position) }
+        notifyItemRemoved(position)
+    }
 
     override fun getItemCount(): Int = restaurantList.size
 

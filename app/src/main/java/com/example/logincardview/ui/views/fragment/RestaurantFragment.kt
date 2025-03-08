@@ -11,16 +11,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.logincardview.R
+import com.example.logincardview.data.repository.RestaurantRepository
 import com.example.logincardview.databinding.FragmentRestaurantBinding
 import com.example.logincardview.domain.models.Restaurant
+import com.example.logincardview.network.RetrofitClient
 import com.example.logincardview.ui.adapter.RestaurantAdapter
 import com.example.logincardview.ui.modelview.RestaurantViewModel
+import com.example.logincardview.ui.modelview.RestaurantViewModelFactory
 
 class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
     private lateinit var binding: FragmentRestaurantBinding
     private lateinit var adapter: RestaurantAdapter
-    private val restaurantViewModel: RestaurantViewModel by viewModels()
+    private val restaurantViewModel: RestaurantViewModel by viewModels {
+        RestaurantViewModelFactory(RestaurantRepository(RetrofitClient.restaurantApi))
+    }
     private var isFirstLoad = true
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -49,7 +54,7 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
         if (isAdmin)
             binding.addButton.visibility = View.VISIBLE
-         else
+        else
             binding.addButton.visibility = View.GONE
 
         adapter.setAdminState(sharedPreferences.getBoolean("is_admin", false))
@@ -73,43 +78,39 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
         }
     }
 
-    private fun onDeleteRestaurant(position: Int) {
-        val restaurantName = adapter.restaurantList[position].name
-        restaurantViewModel.deleteRestaurant(position)
+    private fun onDeleteRestaurant(restaurant: Restaurant) {
+        val restaurantId = restaurant.id
+        restaurantViewModel.deleteRestaurant(restaurantId!!)
+
         Toast.makeText(
             requireContext(),
-            "Restaurante eliminado: $restaurantName",
+            "Restaurante eliminado: ${restaurant.name}",
             Toast.LENGTH_SHORT
         ).show()
     }
 
     private fun onEditRestaurant(restaurant: Restaurant) {
-        val dialog = RestaurantDialogFragmentCU().newInstance(restaurant, true)
+        val dialog = RestaurantDialogFragmentCU().newInstance(restaurant, isEdit = true)
         dialog.onUpdate = { updatedRestaurant ->
             restaurantViewModel.editRestaurant(restaurant, updatedRestaurant)
-
-            val updatedList = restaurantViewModel.restaurantLiveData.value?.toMutableList()
-            val index = updatedList?.indexOfFirst { it.name == restaurant.name }
-            if (index != null && index != -1) {
-                updatedList[index] = updatedRestaurant
-                adapter.updateList(updatedList)
-            }
         }
         dialog.show(parentFragmentManager, "EditRestaurantDialogFragment")
     }
 
     private fun showAddRestaurantDialog() {
-        val dialog = RestaurantDialogFragmentCU()
+        val dialog = RestaurantDialogFragmentCU().newInstance(
+            Restaurant(
+                id = null,
+                name = "",
+                address = "",
+                phone = "",
+                rating = 0,
+                description = ""
+            ),
+            isEdit = true
+        )
         dialog.onUpdate = { restaurant ->
             restaurantViewModel.addRestaurant(restaurant)
-
-            val updatedList = restaurantViewModel.restaurantLiveData.value?.toMutableList()
-            updatedList?.add(restaurant)
-            adapter.updateList(updatedList ?: emptyList())
-
-            binding.recyclerViewLocal.post {
-                binding.recyclerViewLocal.smoothScrollToPosition(updatedList?.size?.minus(1) ?: 0)
-            }
         }
         dialog.show(parentFragmentManager, "AddRestaurantDialogFragment")
     }

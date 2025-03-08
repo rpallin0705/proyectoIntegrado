@@ -8,6 +8,7 @@ class RestaurantDataSource {
 
     private val restaurantList = mutableListOf<RestaurantDTO>(
         RestaurantDTO(
+            1,
             "Sukiyabashi Jiro",
             "Calle Gran Vía, 12, 28013 Madrid, España",
             "+34 911 123 456",
@@ -15,6 +16,7 @@ class RestaurantDataSource {
             "Famoso restaurante de sushi dirigido por el maestro Jiro Ono, conocido por su técnica impecable y su menú omakase."
         ),
         RestaurantDTO(
+            2,
             "Narisawa",
             "Passeig de Gràcia, 45, 08007 Barcelona, España",
             "+34 932 345 678",
@@ -22,6 +24,7 @@ class RestaurantDataSource {
             "Restaurante innovador que combina técnicas francesas con ingredientes japoneses, destacando la sostenibilidad y la naturaleza."
         ),
         RestaurantDTO(
+            3,
             "Kyo Aji",
             "Avenida de la Constitución, 18, 41004 Sevilla, España",
             "+34 954 987 654",
@@ -29,6 +32,7 @@ class RestaurantDataSource {
             "Auténtico restaurante kaiseki que ofrece platos de temporada preparados con precisión y maestría."
         ),
         RestaurantDTO(
+            4,
             "Kitcho Arashiyama",
             "Calle Larios, 10, 29005 Málaga, España",
             "+34 952 321 789",
@@ -36,6 +40,7 @@ class RestaurantDataSource {
             "Experiencia culinaria kaiseki de lujo en un entorno tradicional con vistas serenas."
         ),
         RestaurantDTO(
+            5,
             "Gion Sasaki",
             "Calle Alcalá, 25, 28014 Madrid, España",
             "+34 910 456 789",
@@ -43,6 +48,7 @@ class RestaurantDataSource {
             "Restaurante moderno de kaiseki que ofrece una mezcla única de creatividad y tradición."
         ),
         RestaurantDTO(
+            6,
             "Mizai",
             "Calle Colón, 34, 46004 Valencia, España",
             "+34 963 258 741",
@@ -50,6 +56,7 @@ class RestaurantDataSource {
             "Restaurante exclusivo con un menú kaiseki cuidadosamente elaborado y una atmósfera íntima."
         ),
         RestaurantDTO(
+            7,
             "Sushi Saito",
             "Calle Balmes, 15, 08007 Barcelona, España",
             "+34 934 567 890",
@@ -57,6 +64,7 @@ class RestaurantDataSource {
             "Uno de los mejores restaurantes de sushi, conocido por su pescado fresco y la destreza del chef."
         ),
         RestaurantDTO(
+            8,
             "Nihonryori Ryugin",
             "Paseo del Prado, 8, 28014 Madrid, España",
             "+34 917 654 321",
@@ -64,6 +72,7 @@ class RestaurantDataSource {
             "Restaurante de alta gastronomía que fusiona la cocina japonesa con técnicas modernas e innovadoras."
         ),
         RestaurantDTO(
+            9,
             "Ishikawa",
             "Calle San Fernando, 15, 41001 Sevilla, España",
             "+34 955 123 321",
@@ -71,6 +80,7 @@ class RestaurantDataSource {
             "Restaurante kaiseki que ofrece platos delicados y elegantes en una atmósfera tranquila y sofisticada."
         ),
         RestaurantDTO(
+            10,
             "Sushi Mizutani",
             "Calle Mayor, 20, 28005 Madrid, España",
             "+34 911 987 654",
@@ -89,7 +99,7 @@ class RestaurantDataSource {
     }
 
     fun deleteRestaurant(restaurantId: Int) {
-        restaurantList.removeAt(restaurantId)
+        restaurantList.removeAt(restaurantId.toInt())
     }
 
     fun editRestaurant(oldRestaurant: RestaurantDTO, newRestaurant: RestaurantDTO) {

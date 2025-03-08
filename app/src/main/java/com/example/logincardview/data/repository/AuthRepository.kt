@@ -11,7 +11,7 @@ class AuthRepository {
 
     suspend fun login(email: String, password: String): Boolean {
         return try {
-            val response: Response<AuthResponse> = RetrofitClient.instance.login(UserRequest(email, password))
+            val response: Response<AuthResponse> = RetrofitClient.authApi.login(UserRequest(email, password))
             if (response.isSuccessful && response.body() != null) {
                 val token = response.body()!!.token
                 MySharedPreferences.saveToken(token)
@@ -27,7 +27,7 @@ class AuthRepository {
 
     suspend fun register(email: String, password: String): Boolean {
         return try {
-            val response: Response<Unit> = RetrofitClient.instance.register(UserRequest(email, password))
+            val response: Response<Unit> = RetrofitClient.authApi.register(UserRequest(email, password))
             response.isSuccessful
         } catch (e: Exception) {
             false
@@ -38,7 +38,7 @@ class AuthRepository {
         val token = MySharedPreferences.getToken() ?: return false
 
         return try {
-            val response: Response<Unit> = RetrofitClient.instance.logout("Bearer $token")
+            val response: Response<Unit> = RetrofitClient.authApi.logout("Bearer $token")
 
             if (response.isSuccessful) {
 
