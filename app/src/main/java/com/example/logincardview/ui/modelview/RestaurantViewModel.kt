@@ -38,11 +38,18 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
         }
     }
 
-    fun toggleFavorite(restaurantId: Long) {
+    fun toggleFavorite(restaurantId: Long, restaurantName: String, onComplete: (String) -> Unit) {
         viewModelScope.launch {
             repository.toggleFavorite(restaurantId)
             val updatedFavorites = repository.getFavorites()
             favoritesLiveData.postValue(updatedFavorites)
+
+            val message = if (restaurantId in updatedFavorites) {
+                "$restaurantName añadido a favoritos"
+            } else {
+                "$restaurantName eliminado de favoritos"
+            }
+            onComplete(message)
         }
     }
 

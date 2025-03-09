@@ -76,7 +76,7 @@ open class RestaurantFragment(private val isFavoritesScreen: Boolean = false) : 
             emptyList(),
             ::onDeleteRestaurant,
             ::onEditRestaurant,
-            ::onFavoriteClick,
+            { id, name -> onFavoriteClick(id, name) },
             restaurantViewModel.favoritesLiveData.value ?: emptySet()
         )
         binding.recyclerViewLocal.adapter = adapter
@@ -152,7 +152,15 @@ open class RestaurantFragment(private val isFavoritesScreen: Boolean = false) : 
         }
     }
 
-    private fun onFavoriteClick(restaurantId: Long) {
-        restaurantViewModel.toggleFavorite(restaurantId)
+    private fun onFavoriteClick(restaurantId: Long, restaurantName: String) {
+        restaurantViewModel.toggleFavorite(restaurantId, restaurantName) { message ->
+            requireActivity().runOnUiThread {
+                showToast(message)
+            }
+        }
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

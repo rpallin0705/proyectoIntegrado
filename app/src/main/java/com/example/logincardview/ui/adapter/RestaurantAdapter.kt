@@ -11,7 +11,7 @@ class RestaurantAdapter(
     var restaurantList: List<Restaurant>,
     private val onDeleteClick: (Restaurant) -> Unit,
     private val onEditClick: (Restaurant) -> Unit,
-    private val onFavoriteClick: (Long) -> Unit,
+    private val onFavoriteClick: (Long, String) -> Unit,
     private var favoriteRestaurants: Set<Long>
 ) : RecyclerView.Adapter<RestaurantView>() {
 
@@ -45,7 +45,7 @@ class RestaurantAdapter(
         }
 
         holder.renderize(restaurant, isFavorite) { restaurantId ->
-            onFavoriteClick(restaurantId)
+            onFavoriteClick(restaurantId, restaurant.name)
         }
     }
 
