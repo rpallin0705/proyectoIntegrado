@@ -27,12 +27,13 @@ class FavoritesFragment : RestaurantFragment(isFavoritesScreen = true) {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentRestaurantBinding.inflate(inflater, container, false)
+        binding.addButton.visibility = View.GONE
         setupRecyclerView()
         observeViewModel()
         return binding.root
     }
 
-    private fun setupRecyclerView() {
+    override fun setupRecyclerView() {
         binding.recyclerViewLocal.layoutManager = LinearLayoutManager(requireContext())
         adapter = RestaurantAdapter(
             emptyList(),

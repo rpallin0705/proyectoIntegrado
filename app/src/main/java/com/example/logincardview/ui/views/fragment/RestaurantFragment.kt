@@ -70,9 +70,8 @@ open class RestaurantFragment(private val isFavoritesScreen: Boolean = false) : 
         }
     }
 
-    private fun setupRecyclerView() {
+    open fun setupRecyclerView() {
         binding.recyclerViewLocal.layoutManager = LinearLayoutManager(requireContext())
-
         adapter = RestaurantAdapter(
             emptyList(),
             ::onDeleteRestaurant,
@@ -80,7 +79,6 @@ open class RestaurantFragment(private val isFavoritesScreen: Boolean = false) : 
             ::onFavoriteClick,
             restaurantViewModel.favoritesLiveData.value ?: emptySet()
         )
-
         binding.recyclerViewLocal.adapter = adapter
     }
 
