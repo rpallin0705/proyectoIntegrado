@@ -80,44 +80,65 @@
                     android:textSize="12sp"
                     app:drawableStartCompat="@drawable/baseline_phone_24" />
 
+
                 <LinearLayout
-                    android:id="@+id/local_rate"
+                    android:id="@+id/rate_and_favs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="bottom|end"
+                    android:gravity="center|end"
                     android:orientation="horizontal"
                     android:padding="3dp">
 
-                    <ImageView
-                        android:id="@+id/imageView3"
+                    <LinearLayout
+                        android:id="@+id/local_rate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/baseline_star_24" />
+                        android:gravity="bottom|start"
+                        android:layout_marginRight="40dp"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
+
+                        <ImageView
+                            android:id="@+id/imageView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/baseline_star_24" />
+
+                        <ImageView
+                            android:id="@+id/imageView4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/baseline_star_24" />
+
+                        <ImageView
+                            android:id="@+id/imageView5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/baseline_star_24" />
+
+                        <ImageView
+                            android:id="@+id/imageView6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/baseline_star_24" />
+
+                        <ImageView
+                            android:id="@+id/imageView7"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/baseline_star_half_24" />
+
+
+                    </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/imageView4"
+                        android:id="@+id/fav_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/baseline_star_24" />
-
-                    <ImageView
-                        android:id="@+id/imageView5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/baseline_star_24" />
-
-                    <ImageView
-                        android:id="@+id/imageView6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/baseline_star_24" />
-
-                    <ImageView
-                        android:id="@+id/imageView7"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/baseline_star_half_24" />
+                        app:srcCompat="@drawable/baseline_favorite_border_24" />
                 </LinearLayout>
+
+
             </LinearLayout>
         </LinearLayout>
 

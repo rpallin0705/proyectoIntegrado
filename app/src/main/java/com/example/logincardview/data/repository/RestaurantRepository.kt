@@ -63,7 +63,10 @@ class RestaurantRepository(
 
     override suspend fun edit(oldRestaurant: Restaurant, newRestaurant: Restaurant) {
         try {
-            Log.d("RestaurantRepository", "Enviando PATCH con ID ${oldRestaurant.id} y datos $newRestaurant")
+            Log.d(
+                "RestaurantRepository",
+                "Enviando PATCH con ID ${oldRestaurant.id} y datos $newRestaurant"
+            )
             val response = withContext(Dispatchers.IO) {
                 apiService.editRestaurant(oldRestaurant.id!!, newRestaurant.toDTO())
             }
@@ -76,6 +79,32 @@ class RestaurantRepository(
             }
         } catch (e: Exception) {
             Log.e("RestaurantRepository", "Excepción en API: ${e.localizedMessage}", e)
+        }
+    }
+
+    override suspend fun getFavorites(): Set<Long> {
+        return try {
+            val response = apiService.getFavorites()
+            if (response.isSuccessful && response.body() != null) {
+                response.body()!!.toSet()
+            } else {
+                emptySet()
+            }
+        } catch (e: Exception) {
+            emptySet()
+        }
+    }
+
+    override suspend fun toggleFavorite(restaurantId: Long): Set<Long> {
+        return try {
+            val response = apiService.toggleFavorite(restaurantId)
+            if (response.isSuccessful && response.body() != null) {
+                response.body()!!.toSet()
+            } else {
+                emptySet()
+            }
+        } catch (e: Exception) {
+            emptySet()
         }
     }
 }

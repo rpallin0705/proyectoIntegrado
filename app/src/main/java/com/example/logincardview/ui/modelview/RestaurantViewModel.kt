@@ -17,6 +17,7 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
     val restaurantLiveData = MutableLiveData<List<Restaurant>>()
     private val progressBarLiveData = MutableLiveData<Boolean>()
     private val errorLiveData = MutableLiveData<String>()
+    val favoritesLiveData = MutableLiveData<Set<Long>>()
 
     private val getRestaurantsUseCase = GetRestaurantsUseCase(repository)
     private val addRestaurantUseCase = AddRestaurantUseCase(repository)
@@ -30,6 +31,27 @@ class RestaurantViewModel(private val repository: RestaurantRepository) : ViewMo
         }
     }
 
+    fun getFavoriteRestaurants() {
+        viewModelScope.launch {
+            val favoriteIds = repository.getFavorites()
+            favoritesLiveData.postValue(favoriteIds)
+        }
+    }
+
+    fun toggleFavorite(restaurantId: Long, restaurantName: String, onComplete: (String) -> Unit) {
+        viewModelScope.launch {
+            repository.toggleFavorite(restaurantId)
+            val updatedFavorites = repository.getFavorites()
+            favoritesLiveData.postValue(updatedFavorites)
+
+            val message = if (restaurantId in updatedFavorites) {
+                "$restaurantName añadido a favoritos"
+            } else {
+                "$restaurantName eliminado de favoritos"
+            }
+            onComplete(message)
+        }
+    }
 
     fun addRestaurant(restaurant: Restaurant) {
         viewModelScope.launch {

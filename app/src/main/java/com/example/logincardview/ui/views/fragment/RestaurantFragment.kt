@@ -19,20 +19,24 @@ import com.example.logincardview.ui.adapter.RestaurantAdapter
 import com.example.logincardview.ui.modelview.RestaurantViewModel
 import com.example.logincardview.ui.modelview.RestaurantViewModelFactory
 
-class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
+open class RestaurantFragment(private val isFavoritesScreen: Boolean = false) : Fragment(R.layout.fragment_restaurant) {
 
     private lateinit var binding: FragmentRestaurantBinding
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var adapter: RestaurantAdapter
+
     private val restaurantViewModel: RestaurantViewModel by viewModels {
         RestaurantViewModelFactory(RestaurantRepository(RetrofitClient.restaurantApi))
     }
+
     private var isFirstLoad = true
-    private lateinit var sharedPreferences: SharedPreferences
 
     private val prefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (key == "is_admin") {
-            val isAdmin = sharedPreferences.getBoolean("is_admin", false)
-            adapter.setAdminState(isAdmin)
+            if (::sharedPreferences.isInitialized) {
+                val isAdmin = sharedPreferences.getBoolean("is_admin", false)
+                adapter.setAdminState(isAdmin)
+            }
         }
     }
 
@@ -42,8 +46,8 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentRestaurantBinding.inflate(inflater, container, false)
-        sharedPreferences =
-            requireActivity().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
+
+        sharedPreferences = requireActivity().getSharedPreferences("login_prefs", Context.MODE_PRIVATE)
         sharedPreferences.registerOnSharedPreferenceChangeListener(prefListener)
 
         setupRecyclerView()
@@ -52,23 +56,29 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
         val isAdmin = sharedPreferences.getBoolean("is_admin", false)
 
-        if (isAdmin)
-            binding.addButton.visibility = View.VISIBLE
-        else
-            binding.addButton.visibility = View.GONE
+        binding.addButton.visibility = if (isAdmin && !isFavoritesScreen) View.VISIBLE else View.GONE
 
-        adapter.setAdminState(sharedPreferences.getBoolean("is_admin", false))
+        adapter.setAdminState(isAdmin)
+
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(prefListener)
+        if (::sharedPreferences.isInitialized) {
+            sharedPreferences.unregisterOnSharedPreferenceChangeListener(prefListener)
+        }
     }
 
-    private fun setupRecyclerView() {
+    open fun setupRecyclerView() {
         binding.recyclerViewLocal.layoutManager = LinearLayoutManager(requireContext())
-        adapter = RestaurantAdapter(emptyList(), ::onDeleteRestaurant, ::onEditRestaurant)
+        adapter = RestaurantAdapter(
+            emptyList(),
+            ::onDeleteRestaurant,
+            ::onEditRestaurant,
+            { id, name -> onFavoriteClick(id, name) },
+            restaurantViewModel.favoritesLiveData.value ?: emptySet()
+        )
         binding.recyclerViewLocal.adapter = adapter
     }
 
@@ -117,21 +127,19 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
 
     private fun observeViewModel() {
         restaurantViewModel.restaurantLiveData.observe(viewLifecycleOwner) { restaurants ->
-            if (restaurants.isNotEmpty()) {
-                updateRestaurantList(restaurants)
+            restaurantViewModel.favoritesLiveData.observe(viewLifecycleOwner) { favorites ->
+                adapter.updateList(restaurants, favorites)
             }
         }
-        loadData()
-    }
 
-    private fun loadData() {
         restaurantViewModel.getRestaurants()
+        restaurantViewModel.getFavoriteRestaurants()
     }
 
     private fun updateRestaurantList(restaurants: List<Restaurant>) {
         if (adapter.restaurantList != restaurants) {
             val previousSize = adapter.restaurantList.size
-            adapter.updateList(restaurants)
+            adapter.updateList(restaurants, restaurantViewModel.favoritesLiveData.value ?: emptySet())
 
             adapter.setAdminState(sharedPreferences.getBoolean("is_admin", false))
 
@@ -142,5 +150,17 @@ class RestaurantFragment : Fragment(R.layout.fragment_restaurant) {
             }
             isFirstLoad = false
         }
+    }
+
+    private fun onFavoriteClick(restaurantId: Long, restaurantName: String) {
+        restaurantViewModel.toggleFavorite(restaurantId, restaurantName) { message ->
+            requireActivity().runOnUiThread {
+                showToast(message)
+            }
+        }
+    }
+
+    fun showToast(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

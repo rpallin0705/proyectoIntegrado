@@ -24,7 +24,7 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
         binding.imageView7
     )
 
-    fun renderize(restaurant: Restaurant) {
+    fun renderize(restaurant: Restaurant, isFavorite: Boolean, onFavoriteClick: (Long) -> Unit) {
         binding.localName.text = restaurant.name
         binding.localAddress.text = restaurant.address
         binding.localPhone.text = restaurant.phone
@@ -41,6 +41,16 @@ class RestaurantView(view: View) : RecyclerView.ViewHolder(view) {
                 .load(R.drawable.cardview_img1)
                 .centerCrop()
                 .into(binding.localImage)
+        }
+
+        updateStars(restaurant.rating)
+
+        binding.favButton.setImageResource(
+            if (isFavorite) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24
+        )
+
+        binding.favButton.setOnClickListener {
+            onFavoriteClick(restaurant.id!!)
         }
 
         updateStars(restaurant.rating)
