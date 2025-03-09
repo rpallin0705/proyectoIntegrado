@@ -23,8 +23,9 @@ class RestaurantAdapter(
         return RestaurantView(layoutInflater.inflate(layoutItemRestaurant, parent, false))
     }
 
-    fun updateList(newList: List<Restaurant>) {
+    fun updateList(newList: List<Restaurant>, favoriteRestaurants: Set<Long>) {
         restaurantList = newList
+        this.favoriteRestaurants = favoriteRestaurants
         notifyDataSetChanged()
     }
 

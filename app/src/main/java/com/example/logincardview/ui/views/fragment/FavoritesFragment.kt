@@ -15,7 +15,7 @@ import com.example.logincardview.ui.adapter.RestaurantAdapter
 import com.example.logincardview.ui.modelview.RestaurantViewModel
 import com.example.logincardview.ui.modelview.RestaurantViewModelFactory
 
-class FavoritesFragment : Fragment(R.layout.fragment_restaurant) {
+class FavoritesFragment : RestaurantFragment(isFavoritesScreen = true) {
 
     private lateinit var binding: FragmentRestaurantBinding
     private lateinit var adapter: RestaurantAdapter
@@ -53,15 +53,15 @@ class FavoritesFragment : Fragment(R.layout.fragment_restaurant) {
         restaurantViewModel.restaurantLiveData.observe(viewLifecycleOwner) { restaurants ->
             val favoriteIds = restaurantViewModel.favoritesLiveData.value ?: emptySet()
             val favoriteRestaurants = restaurants.filter { it.id in favoriteIds }
-            adapter.updateList(favoriteRestaurants)
+
+            adapter.updateList(favoriteRestaurants, favoriteIds)
         }
 
         restaurantViewModel.favoritesLiveData.observe(viewLifecycleOwner) { favorites ->
             val restaurants = restaurantViewModel.restaurantLiveData.value ?: emptyList()
             val favoriteRestaurants = restaurants.filter { it.id in favorites }
-            adapter.updateList(favoriteRestaurants)
+
+            adapter.updateList(favoriteRestaurants, favorites)
         }
     }
-
-
 }
